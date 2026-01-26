@@ -76,6 +76,17 @@ export default function AboutPage() {
     ([x, y]) => getInterpolatedColor(x as number, y as number)
   )
 
+  // Pre-compute gradient backgrounds as motion values
+  const auraGradient = useTransform(
+    auraColor,
+    (color) => `radial-gradient(circle, ${color} 0%, transparent 70%)`
+  )
+
+  const secondaryGradient = useTransform(
+    auraColor,
+    (color) => `radial-gradient(circle, ${color} 0%, transparent 60%)`
+  )
+
   return (
     <main
       ref={containerRef}
@@ -94,45 +105,27 @@ export default function AboutPage() {
           marginTop: -250,
           borderRadius: '50%',
           filter: 'blur(80px)',
-          opacity: 0.3,
+          opacity: 0.4,
+          background: auraGradient,
         }}
-      >
-        <motion.div
-          className="w-full h-full rounded-full"
-          style={{
-            background: useTransform(
-              auraColor,
-              (color) => `radial-gradient(circle, ${color} 0%, transparent 70%)`
-            ),
-          }}
-        />
-      </motion.div>
+      />
 
       {/* Secondary subtle glow for depth */}
       <motion.div
         className="pointer-events-none absolute z-0"
         style={{
-          x: useSpring(mouseX, { stiffness: 40, damping: 20, mass: 0.8 }),
-          y: useSpring(mouseY, { stiffness: 40, damping: 20, mass: 0.8 }),
+          x: smoothX,
+          y: smoothY,
           width: 300,
           height: 300,
           marginLeft: -150,
           marginTop: -150,
           borderRadius: '50%',
           filter: 'blur(60px)',
-          opacity: 0.2,
+          opacity: 0.25,
+          background: secondaryGradient,
         }}
-      >
-        <motion.div
-          className="w-full h-full rounded-full"
-          style={{
-            background: useTransform(
-              auraColor,
-              (color) => `radial-gradient(circle, ${color} 0%, transparent 60%)`
-            ),
-          }}
-        />
-      </motion.div>
+      />
 
       {/* Content */}
       <div className="relative z-10 max-w-2xl mx-auto px-6 pt-32 pb-20">
@@ -253,6 +246,54 @@ export default function AboutPage() {
             Download Resume (PDF) ↓
           </Link>
         </div>
+
+        {/* Contact Section */}
+        <section id="contact" className="mt-16 scroll-mt-24">
+          <h2
+            className="uppercase tracking-widest text-xs mb-4"
+            style={{ color: 'var(--text-secondary)' }}
+          >
+            Contact
+          </h2>
+          <div className="space-y-3">
+            <a
+              href="mailto:sarahkgraves2@gmail.com"
+              className="block font-sans text-lg transition-colors hover:text-[var(--accent-gold)]"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              sarahkgraves2@gmail.com
+            </a>
+            <div className="flex gap-6">
+              <a
+                href="https://linkedin.com/in/sarahkgraves"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-sans text-lg transition-colors hover:text-[var(--accent-gold)]"
+                style={{ color: 'var(--text-primary)' }}
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://instagram.com/sarahkgraves"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-sans text-lg transition-colors hover:text-[var(--accent-gold)]"
+                style={{ color: 'var(--text-primary)' }}
+              >
+                Instagram
+              </a>
+              <a
+                href="https://x.com/sarahkgraves"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-sans text-lg transition-colors hover:text-[var(--accent-gold)]"
+                style={{ color: 'var(--text-primary)' }}
+              >
+                X
+              </a>
+            </div>
+          </div>
+        </section>
       </div>
 
       {/* Mobile fallback - hide aura on touch devices */}
