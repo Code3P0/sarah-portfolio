@@ -64,7 +64,7 @@ const arrowVariants = {
   hover: { opacity: 1, x: 0, scale: 1 }
 }
 
-const springTransition = { type: "spring", stiffness: 400, damping: 25 }
+const springTransition = { type: "spring" as const, stiffness: 400, damping: 25 }
 
 // Reusable hover item component
 function HoverItem({ children }: { children: string }) {
