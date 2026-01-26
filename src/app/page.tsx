@@ -3,7 +3,33 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Footer from '@/components/Footer'
 import { AuroraEffect } from '@/components/AuroraEffect'
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useMemo } from 'react'
+
+// Star configuration for dark mode background
+interface Star {
+  id: number
+  x: number
+  y: number
+  size: number
+  opacity: number
+  duration: number
+  delay: number
+}
+
+// Generate scattered stars
+function useStars(count: number): Star[] {
+  return useMemo(() => {
+    return Array.from({ length: count }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: 12 + Math.random() * 16, // 12-28px
+      opacity: 0.15 + Math.random() * 0.25, // 0.15-0.4 (subtle)
+      duration: 4 + Math.random() * 4, // 4-8s float cycle
+      delay: Math.random() * 4, // 0-4s delay
+    }))
+  }, [count])
+}
 
 // Burst particle type for signature hover effect
 interface BurstParticle {
@@ -146,6 +172,9 @@ function ProjectLink({ href, children }: { href: string; children: string }) {
 }
 
 export default function Home() {
+  // Generate scattered stars for dark mode
+  const stars = useStars(18)
+
   // State for burst particles on signature hover
   const [particles, setParticles] = useState<BurstParticle[]>([])
   const signatureRef = useRef<HTMLDivElement>(null)
@@ -221,46 +250,77 @@ export default function Home() {
         {/* Aurora/Nebula effect - dark mode only */}
         <AuroraEffect />
 
+        {/* Scattered stars - dark mode only */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden hidden dark:block z-[1]">
+          {stars.map((star) => (
+            <motion.img
+              key={star.id}
+              src="/images/icon4.png"
+              alt=""
+              className="absolute"
+              style={{
+                left: `${star.x}%`,
+                top: `${star.y}%`,
+                width: star.size,
+                height: star.size,
+                filter: 'invert(1) brightness(1.5)',
+                opacity: star.opacity,
+              }}
+              animate={{
+                y: [0, -8, 0, 6, 0],
+                x: [0, 4, 0, -3, 0],
+                opacity: [star.opacity, star.opacity * 1.3, star.opacity, star.opacity * 0.8, star.opacity],
+              }}
+              transition={{
+                duration: star.duration,
+                repeat: Infinity,
+                delay: star.delay,
+                ease: 'easeInOut',
+              }}
+            />
+          ))}
+        </div>
+
         {/* Real cloud images - light mode only */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden block dark:hidden">
           {/* Cloud 1 - large, top right */}
           <img
             src="/images/cloud1.png"
             alt=""
-            className="absolute w-[450px] md:w-[600px] opacity-60 animate-cloud-drift"
-            style={{ top: '5%', right: '-10%' }}
+            className="absolute w-[600px] md:w-[850px] opacity-35 animate-cloud-drift"
+            style={{ top: '0%', right: '-15%' }}
           />
 
           {/* Cloud 2 - large, left side */}
           <img
             src="/images/cloud2.png"
             alt=""
-            className="absolute w-[400px] md:w-[550px] opacity-55 animate-cloud-drift"
-            style={{ top: '20%', left: '-15%', animationDelay: '-8s' }}
+            className="absolute w-[550px] md:w-[750px] opacity-30 animate-cloud-drift"
+            style={{ top: '15%', left: '-20%', animationDelay: '-8s' }}
           />
 
-          {/* Cloud 3 - medium, top center */}
+          {/* Cloud 3 - large, top center */}
           <img
             src="/images/cloud3.png"
             alt=""
-            className="absolute w-[300px] md:w-[420px] opacity-50 animate-cloud-drift"
-            style={{ top: '2%', left: '25%', animationDelay: '-15s' }}
+            className="absolute w-[450px] md:w-[650px] opacity-30 animate-cloud-drift"
+            style={{ top: '-5%', left: '20%', animationDelay: '-15s' }}
           />
 
-          {/* Cloud 4 - medium, lower area */}
+          {/* Cloud 4 - large, lower area */}
           <img
             src="/images/cloud4.png"
             alt=""
-            className="absolute w-[320px] md:w-[450px] opacity-45 animate-cloud-drift"
-            style={{ top: '45%', left: '0%', animationDelay: '-22s' }}
+            className="absolute w-[500px] md:w-[700px] opacity-25 animate-cloud-drift"
+            style={{ top: '40%', left: '-10%', animationDelay: '-22s' }}
           />
 
           {/* Cloud 1 duplicate - far right, staggered */}
           <img
             src="/images/cloud1.png"
             alt=""
-            className="absolute w-[380px] md:w-[520px] opacity-50 animate-cloud-drift"
-            style={{ top: '30%', right: '-20%', animationDelay: '-30s' }}
+            className="absolute w-[550px] md:w-[750px] opacity-30 animate-cloud-drift"
+            style={{ top: '25%', right: '-25%', animationDelay: '-30s' }}
           />
         </div>
 
@@ -311,19 +371,19 @@ export default function Home() {
         </div>
 
         {/* Welcome text */}
-        <div className="mt-6 max-w-3xl mx-auto text-center z-10 px-6">
+        <div className="mt-16 max-w-4xl mx-auto text-center z-10 px-6">
           <p
-            className="font-serif text-2xl md:text-3xl font-medium leading-relaxed"
+            className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
             style={{ color: 'var(--text-primary)' }}
           >
-            Welcome to my corner of the internet! This is my personal brand — please explore.
+            Welcome! This is my personal brand — please explore.
           </p>
           <p
-            className="font-serif text-2xl md:text-3xl font-medium leading-relaxed mt-2"
+            className="font-serif text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mt-4"
             style={{ color: 'var(--text-primary)' }}
           >
             <Link
-              href="mailto:sarahkgraves2@gmail.com"
+              href="/about#contact"
               className="underline decoration-2 underline-offset-4 transition-colors duration-200 hover:text-[var(--accent-gold)]"
             >
               Contact
