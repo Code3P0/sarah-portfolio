@@ -1,6 +1,7 @@
 'use client'
 import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion'
 import { useEffect, useRef, useState, useMemo } from 'react'
+import Footer from '@/components/Footer'
 
 const projects = [
   {
@@ -282,6 +283,8 @@ export default function ProjectsPage() {
           }
         `}</style>
       </div>
+
+      <Footer />
     </main>
   )
 }

@@ -2,6 +2,7 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useEffect, useRef } from 'react'
 import Link from 'next/link'
+import Footer from '@/components/Footer'
 
 // Corner colors for interpolation
 const colors = {
@@ -181,8 +182,69 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Background Section */}
+        <section className="mt-16">
+          <h2
+            className="uppercase tracking-widest text-xs mb-4"
+            style={{ color: 'var(--text-secondary)' }}
+          >
+            Background
+          </h2>
+          <ul className="space-y-3">
+            <li
+              className="font-sans text-lg"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              <span className="font-semibold">Texas Women's Basketball</span>
+              <span style={{ color: 'var(--text-secondary)' }}> — Guard (2022-present)</span>
+            </li>
+            <li
+              className="font-sans text-lg"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              <span className="font-semibold">BOSI Advisory Board</span>
+              <span style={{ color: 'var(--text-secondary)' }}> — Member (2024-present)</span>
+            </li>
+            <li
+              className="font-sans text-lg"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              <span className="font-semibold">RedBird Capital</span>
+              <span style={{ color: 'var(--text-secondary)' }}> — Summer Analyst, NYC (2024)</span>
+            </li>
+            <li
+              className="font-sans text-lg"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              <span className="font-semibold">McCombs School of Business</span>
+              <span style={{ color: 'var(--text-secondary)' }}> — BBA Finance (May 2026)</span>
+            </li>
+          </ul>
+        </section>
+
+        {/* What I'm Into Section */}
+        <section className="mt-16">
+          <h2
+            className="uppercase tracking-widest text-xs mb-4"
+            style={{ color: 'var(--text-secondary)' }}
+          >
+            What I'm Into
+          </h2>
+          <ul className="space-y-2">
+            {['Market mapping', 'Product thinking', 'Sports media economics', 'NIL strategy', 'Building from scratch'].map((item) => (
+              <li
+                key={item}
+                className="font-sans text-lg"
+                style={{ color: 'var(--text-primary)' }}
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+        </section>
+
         {/* Resume Link */}
-        <div className="mt-12">
+        <div className="mt-16">
           <Link
             href="/resume.pdf"
             className="text-lg transition-all hover:underline"
@@ -201,6 +263,8 @@ export default function AboutPage() {
           }
         }
       `}</style>
+
+      <Footer />
     </main>
   )
 }

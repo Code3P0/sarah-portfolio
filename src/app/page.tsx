@@ -1,6 +1,84 @@
 'use client'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Footer from '@/components/Footer'
+
+// Animation variants for the arrow effect
+const containerVariants = {
+  hover: {
+    color: "#D4AF37",
+    textShadow: "0 0 20px rgba(212,175,55,0.4)",
+  }
+}
+
+const textVariants = {
+  hover: {
+    letterSpacing: "0.02em",
+  }
+}
+
+const arrowVariants = {
+  initial: { opacity: 0, x: -8, scale: 0.5 },
+  hover: { opacity: 1, x: 0, scale: 1 }
+}
+
+const springTransition = { type: "spring", stiffness: 400, damping: 25 }
+
+// Reusable hover item component
+function HoverItem({ children }: { children: string }) {
+  return (
+    <motion.span
+      className="cursor-pointer font-bold inline-flex items-center"
+      style={{ color: 'var(--text-primary)' }}
+      initial="initial"
+      whileHover="hover"
+      variants={containerVariants}
+      transition={springTransition}
+    >
+      <motion.span variants={textVariants} transition={springTransition}>
+        {children}
+      </motion.span>
+      <motion.span
+        className="ml-1 text-[#D4AF37]"
+        variants={arrowVariants}
+        transition={springTransition}
+      >
+        →
+      </motion.span>
+    </motion.span>
+  )
+}
+
+// Hover item with Link wrapper
+function HoverLink({ href, children, external = false }: { href: string; children: string; external?: boolean }) {
+  return (
+    <Link
+      href={href}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
+    >
+      <motion.span
+        className="cursor-pointer font-bold inline-flex items-center"
+        style={{ color: 'var(--text-primary)' }}
+        initial="initial"
+        whileHover="hover"
+        variants={containerVariants}
+        transition={springTransition}
+      >
+        <motion.span variants={textVariants} transition={springTransition}>
+          {children}
+        </motion.span>
+        <motion.span
+          className="ml-1 text-[#D4AF37]"
+          variants={arrowVariants}
+          transition={springTransition}
+        >
+          →
+        </motion.span>
+      </motion.span>
+    </Link>
+  )
+}
 
 export default function Home() {
   return (
@@ -46,44 +124,11 @@ export default function Home() {
         <section className="py-16">
           <p className="text-2xl md:text-3xl font-serif">
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I am</span>
-            <motion.span
-              style={{ color: 'var(--text-primary)' }}
-              whileHover={{
-                color: "#D4AF37",
-                scale: 1.02,
-                textShadow: "0 0 20px rgba(212,175,55,0.4)",
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 25 }}
-              className="cursor-pointer font-bold inline-block"
-            >
-              Texas Women's Basketball
-            </motion.span>
+            <HoverItem>Texas Women's Basketball</HoverItem>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
-            <motion.span
-              style={{ color: 'var(--text-primary)' }}
-              whileHover={{
-                color: "#D4AF37",
-                scale: 1.02,
-                textShadow: "0 0 20px rgba(212,175,55,0.4)",
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 25 }}
-              className="cursor-pointer font-bold inline-block"
-            >
-              BBA Finance, McCombs '26
-            </motion.span>
+            <HoverItem>BBA Finance, McCombs '26</HoverItem>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
-            <motion.span
-              style={{ color: 'var(--text-primary)' }}
-              whileHover={{
-                color: "#D4AF37",
-                scale: 1.02,
-                textShadow: "0 0 20px rgba(212,175,55,0.4)",
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 25 }}
-              className="cursor-pointer font-bold inline-block"
-            >
-              Sports, media, and tech
-            </motion.span>
+            <HoverItem>Sports, media, and tech</HoverItem>
           </p>
         </section>
 
@@ -91,44 +136,11 @@ export default function Home() {
         <section className="py-16">
           <p className="text-2xl md:text-3xl font-serif">
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I work</span>
-            <motion.span
-              style={{ color: 'var(--text-primary)' }}
-              whileHover={{
-                color: "#D4AF37",
-                scale: 1.02,
-                textShadow: "0 0 20px rgba(212,175,55,0.4)",
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 25 }}
-              className="cursor-pointer font-bold inline-block"
-            >
-              RedBird Capital
-            </motion.span>
+            <HoverItem>RedBird Capital</HoverItem>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
-            <motion.span
-              style={{ color: 'var(--text-primary)' }}
-              whileHover={{
-                color: "#D4AF37",
-                scale: 1.02,
-                textShadow: "0 0 20px rgba(212,175,55,0.4)",
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 25 }}
-              className="cursor-pointer font-bold inline-block"
-            >
-              BOSI Advisory Board
-            </motion.span>
+            <HoverItem>BOSI Advisory Board</HoverItem>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
-            <motion.span
-              style={{ color: 'var(--text-primary)' }}
-              whileHover={{
-                color: "#D4AF37",
-                scale: 1.02,
-                textShadow: "0 0 20px rgba(212,175,55,0.4)",
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 25 }}
-              className="cursor-pointer font-bold inline-block"
-            >
-              Boardroom
-            </motion.span>
+            <HoverItem>Boardroom</HoverItem>
           </p>
         </section>
 
@@ -136,57 +148,13 @@ export default function Home() {
         <section className="py-16">
           <p className="text-2xl md:text-3xl font-serif">
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I build</span>
-            <motion.span
-              style={{ color: 'var(--text-primary)' }}
-              whileHover={{
-                color: "#D4AF37",
-                scale: 1.02,
-                textShadow: "0 0 20px rgba(212,175,55,0.4)",
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 25 }}
-              className="cursor-pointer font-bold inline-block"
-            >
-              Path
-            </motion.span>
+            <HoverLink href="/projects#path">Path</HoverLink>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
-            <motion.span
-              style={{ color: 'var(--text-primary)' }}
-              whileHover={{
-                color: "#D4AF37",
-                scale: 1.02,
-                textShadow: "0 0 20px rgba(212,175,55,0.4)",
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 25 }}
-              className="cursor-pointer font-bold inline-block"
-            >
-              The Operator's Lens
-            </motion.span>
+            <HoverLink href="/projects#operators-lens">The Operator's Lens</HoverLink>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
-            <motion.span
-              style={{ color: 'var(--text-primary)' }}
-              whileHover={{
-                color: "#D4AF37",
-                scale: 1.02,
-                textShadow: "0 0 20px rgba(212,175,55,0.4)",
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 25 }}
-              className="cursor-pointer font-bold inline-block"
-            >
-              BOSI Initiatives
-            </motion.span>
+            <HoverLink href="/projects#bosi">BOSI Initiatives</HoverLink>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
-            <motion.span
-              style={{ color: 'var(--text-primary)' }}
-              whileHover={{
-                color: "#D4AF37",
-                scale: 1.02,
-                textShadow: "0 0 20px rgba(212,175,55,0.4)",
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 25 }}
-              className="cursor-pointer font-bold inline-block"
-            >
-              NOAH Analytics
-            </motion.span>
+            <HoverLink href="/projects#noah">NOAH Analytics</HoverLink>
           </p>
         </section>
 
@@ -194,44 +162,11 @@ export default function Home() {
         <section className="py-16">
           <p className="text-2xl md:text-3xl font-serif">
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I speak</span>
-            <motion.span
-              style={{ color: 'var(--text-primary)' }}
-              whileHover={{
-                color: "#D4AF37",
-                scale: 1.02,
-                textShadow: "0 0 20px rgba(212,175,55,0.4)",
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 25 }}
-              className="cursor-pointer font-bold inline-block"
-            >
-              NIL Economics
-            </motion.span>
+            <HoverItem>NIL Economics</HoverItem>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
-            <motion.span
-              style={{ color: 'var(--text-primary)' }}
-              whileHover={{
-                color: "#D4AF37",
-                scale: 1.02,
-                textShadow: "0 0 20px rgba(212,175,55,0.4)",
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 25 }}
-              className="cursor-pointer font-bold inline-block"
-            >
-              Athlete to Operator
-            </motion.span>
+            <HoverItem>Athlete to Operator</HoverItem>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
-            <motion.span
-              style={{ color: 'var(--text-primary)' }}
-              whileHover={{
-                color: "#D4AF37",
-                scale: 1.02,
-                textShadow: "0 0 20px rgba(212,175,55,0.4)",
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 25 }}
-              className="cursor-pointer font-bold inline-block"
-            >
-              Sports Business & Media
-            </motion.span>
+            <HoverItem>Sports Business & Media</HoverItem>
           </p>
         </section>
 
@@ -239,52 +174,18 @@ export default function Home() {
         <section className="py-16">
           <p className="text-2xl md:text-3xl font-serif">
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">Contact</span>
-            <Link href="mailto:sarahkgraves2@gmail.com">
-              <motion.span
-                style={{ color: 'var(--text-primary)' }}
-                whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-                transition={{ duration: 0 }}
-                className="cursor-pointer font-bold inline-block"
-              >
-                Email
-              </motion.span>
-            </Link>
+            <HoverLink href="mailto:sarahkgraves2@gmail.com">Email</HoverLink>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
-            <Link href="https://linkedin.com/in/sarahkgraves" target="_blank" rel="noopener noreferrer">
-              <motion.span
-                style={{ color: 'var(--text-primary)' }}
-                whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-                transition={{ duration: 0 }}
-                className="cursor-pointer font-bold inline-block"
-              >
-                LinkedIn
-              </motion.span>
-            </Link>
+            <HoverLink href="https://linkedin.com/in/sarahkgraves" external>LinkedIn</HoverLink>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
-            <Link href="https://instagram.com/sarahkgraves" target="_blank" rel="noopener noreferrer">
-              <motion.span
-                style={{ color: 'var(--text-primary)' }}
-                whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-                transition={{ duration: 0 }}
-                className="cursor-pointer font-bold inline-block"
-              >
-                Instagram
-              </motion.span>
-            </Link>
+            <HoverLink href="https://instagram.com/sarahkgraves" external>Instagram</HoverLink>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
-            <Link href="https://x.com/sarahkgraves" target="_blank" rel="noopener noreferrer">
-              <motion.span
-                style={{ color: 'var(--text-primary)' }}
-                whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-                transition={{ duration: 0 }}
-                className="cursor-pointer font-bold inline-block"
-              >
-                X
-              </motion.span>
-            </Link>
+            <HoverLink href="https://x.com/sarahkgraves" external>X</HoverLink>
           </p>
         </section>
       </div>
+
+      <Footer />
     </main>
   )
 }
