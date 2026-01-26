@@ -35,10 +35,10 @@ function generateParticles(count: number) {
     id: i,
     x: Math.random() * 100, // percentage across card width
     y: 20 + Math.random() * 60, // percentage from top (20-80%)
-    size: 32 + Math.random() * 24, // 32-56px (bigger)
+    size: 12 + Math.random() * 8, // 12-20px (smaller, more subtle)
     delay: Math.random() * 0.3,
     duration: 1.2 + Math.random() * 0.6,
-    opacity: 0.5 + Math.random() * 0.4, // 0.5-0.9
+    opacity: 0.3 + Math.random() * 0.2, // 0.3-0.5 (more subtle)
     rotation: Math.random() * 360,
     icon: icons[Math.floor(Math.random() * icons.length)],
   }))
@@ -46,7 +46,7 @@ function generateParticles(count: number) {
 
 // Particle Field Component
 function ParticleField({ isHovered }: { isHovered: boolean }) {
-  const particles = useMemo(() => generateParticles(12), [])
+  const particles = useMemo(() => generateParticles(8), [])
 
   return (
     <AnimatePresence>
