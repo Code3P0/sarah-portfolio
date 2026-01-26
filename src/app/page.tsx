@@ -6,13 +6,13 @@ export default function Home() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="min-h-screen flex flex-col items-center justify-center relative">
-        <h1
-          className="font-serif text-6xl md:text-8xl font-bold"
-          style={{ color: 'var(--text-primary)' }}
-        >
-          SARAH GRAVES!
-        </h1>
+      <section className="min-h-[80vh] flex flex-col items-center justify-center relative">
+        {/* Single image, inverted in dark mode */}
+        <img
+          src="/images/black_signature.gif"
+          alt="Sarah Graves"
+          className="w-full max-w-3xl px-6 dark:invert transition-[filter] duration-200"
+        />
 
         {/* Scroll indicator */}
         <div className="absolute bottom-12 flex flex-col items-center">
@@ -48,27 +48,39 @@ export default function Home() {
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I am</span>
             <motion.span
               style={{ color: 'var(--text-primary)' }}
-              whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-              transition={{ duration: 0 }}
-              className="cursor-pointer font-bold"
+              whileHover={{
+                color: "#D4AF37",
+                scale: 1.02,
+                textShadow: "0 0 20px rgba(212,175,55,0.4)",
+              }}
+              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+              className="cursor-pointer font-bold inline-block"
             >
               Texas Women's Basketball
             </motion.span>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
             <motion.span
               style={{ color: 'var(--text-primary)' }}
-              whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-              transition={{ duration: 0 }}
-              className="cursor-pointer font-bold"
+              whileHover={{
+                color: "#D4AF37",
+                scale: 1.02,
+                textShadow: "0 0 20px rgba(212,175,55,0.4)",
+              }}
+              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+              className="cursor-pointer font-bold inline-block"
             >
               BBA Finance, McCombs '26
             </motion.span>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
             <motion.span
               style={{ color: 'var(--text-primary)' }}
-              whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-              transition={{ duration: 0 }}
-              className="cursor-pointer font-bold"
+              whileHover={{
+                color: "#D4AF37",
+                scale: 1.02,
+                textShadow: "0 0 20px rgba(212,175,55,0.4)",
+              }}
+              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+              className="cursor-pointer font-bold inline-block"
             >
               Sports, media, and tech
             </motion.span>
@@ -81,27 +93,39 @@ export default function Home() {
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I work</span>
             <motion.span
               style={{ color: 'var(--text-primary)' }}
-              whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-              transition={{ duration: 0 }}
-              className="cursor-pointer font-bold"
+              whileHover={{
+                color: "#D4AF37",
+                scale: 1.02,
+                textShadow: "0 0 20px rgba(212,175,55,0.4)",
+              }}
+              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+              className="cursor-pointer font-bold inline-block"
             >
               RedBird Capital
             </motion.span>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
             <motion.span
               style={{ color: 'var(--text-primary)' }}
-              whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-              transition={{ duration: 0 }}
-              className="cursor-pointer font-bold"
+              whileHover={{
+                color: "#D4AF37",
+                scale: 1.02,
+                textShadow: "0 0 20px rgba(212,175,55,0.4)",
+              }}
+              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+              className="cursor-pointer font-bold inline-block"
             >
               BOSI Advisory Board
             </motion.span>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
             <motion.span
               style={{ color: 'var(--text-primary)' }}
-              whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-              transition={{ duration: 0 }}
-              className="cursor-pointer font-bold"
+              whileHover={{
+                color: "#D4AF37",
+                scale: 1.02,
+                textShadow: "0 0 20px rgba(212,175,55,0.4)",
+              }}
+              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+              className="cursor-pointer font-bold inline-block"
             >
               Boardroom
             </motion.span>
@@ -114,36 +138,52 @@ export default function Home() {
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I build</span>
             <motion.span
               style={{ color: 'var(--text-primary)' }}
-              whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-              transition={{ duration: 0 }}
-              className="cursor-pointer font-bold"
+              whileHover={{
+                color: "#D4AF37",
+                scale: 1.02,
+                textShadow: "0 0 20px rgba(212,175,55,0.4)",
+              }}
+              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+              className="cursor-pointer font-bold inline-block"
             >
               Path
             </motion.span>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
             <motion.span
               style={{ color: 'var(--text-primary)' }}
-              whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-              transition={{ duration: 0 }}
-              className="cursor-pointer font-bold"
+              whileHover={{
+                color: "#D4AF37",
+                scale: 1.02,
+                textShadow: "0 0 20px rgba(212,175,55,0.4)",
+              }}
+              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+              className="cursor-pointer font-bold inline-block"
             >
               The Operator's Lens
             </motion.span>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
             <motion.span
               style={{ color: 'var(--text-primary)' }}
-              whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-              transition={{ duration: 0 }}
-              className="cursor-pointer font-bold"
+              whileHover={{
+                color: "#D4AF37",
+                scale: 1.02,
+                textShadow: "0 0 20px rgba(212,175,55,0.4)",
+              }}
+              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+              className="cursor-pointer font-bold inline-block"
             >
               BOSI Initiatives
             </motion.span>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
             <motion.span
               style={{ color: 'var(--text-primary)' }}
-              whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-              transition={{ duration: 0 }}
-              className="cursor-pointer font-bold"
+              whileHover={{
+                color: "#D4AF37",
+                scale: 1.02,
+                textShadow: "0 0 20px rgba(212,175,55,0.4)",
+              }}
+              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+              className="cursor-pointer font-bold inline-block"
             >
               NOAH Analytics
             </motion.span>
@@ -156,27 +196,39 @@ export default function Home() {
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I speak</span>
             <motion.span
               style={{ color: 'var(--text-primary)' }}
-              whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-              transition={{ duration: 0 }}
-              className="cursor-pointer font-bold"
+              whileHover={{
+                color: "#D4AF37",
+                scale: 1.02,
+                textShadow: "0 0 20px rgba(212,175,55,0.4)",
+              }}
+              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+              className="cursor-pointer font-bold inline-block"
             >
               NIL Economics
             </motion.span>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
             <motion.span
               style={{ color: 'var(--text-primary)' }}
-              whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-              transition={{ duration: 0 }}
-              className="cursor-pointer font-bold"
+              whileHover={{
+                color: "#D4AF37",
+                scale: 1.02,
+                textShadow: "0 0 20px rgba(212,175,55,0.4)",
+              }}
+              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+              className="cursor-pointer font-bold inline-block"
             >
               Athlete to Operator
             </motion.span>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
             <motion.span
               style={{ color: 'var(--text-primary)' }}
-              whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
-              transition={{ duration: 0 }}
-              className="cursor-pointer font-bold"
+              whileHover={{
+                color: "#D4AF37",
+                scale: 1.02,
+                textShadow: "0 0 20px rgba(212,175,55,0.4)",
+              }}
+              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+              className="cursor-pointer font-bold inline-block"
             >
               Sports Business & Media
             </motion.span>
@@ -192,7 +244,7 @@ export default function Home() {
                 style={{ color: 'var(--text-primary)' }}
                 whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
                 transition={{ duration: 0 }}
-                className="cursor-pointer font-bold"
+                className="cursor-pointer font-bold inline-block"
               >
                 Email
               </motion.span>
@@ -203,7 +255,7 @@ export default function Home() {
                 style={{ color: 'var(--text-primary)' }}
                 whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
                 transition={{ duration: 0 }}
-                className="cursor-pointer font-bold"
+                className="cursor-pointer font-bold inline-block"
               >
                 LinkedIn
               </motion.span>
@@ -214,7 +266,7 @@ export default function Home() {
                 style={{ color: 'var(--text-primary)' }}
                 whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
                 transition={{ duration: 0 }}
-                className="cursor-pointer font-bold"
+                className="cursor-pointer font-bold inline-block"
               >
                 Instagram
               </motion.span>
@@ -225,7 +277,7 @@ export default function Home() {
                 style={{ color: 'var(--text-primary)' }}
                 whileHover={{ color: "#D4AF37", textShadow: "0 0 30px rgba(212,175,55,0.5)" }}
                 transition={{ duration: 0 }}
-                className="cursor-pointer font-bold"
+                className="cursor-pointer font-bold inline-block"
               >
                 X
               </motion.span>

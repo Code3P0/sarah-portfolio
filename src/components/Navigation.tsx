@@ -16,6 +16,17 @@ export default function Navigation() {
 
   return (
     <>
+    {/* SG Logo - top left */}
+    <Link
+      href="/"
+      className="fixed top-4 left-6 z-50 font-serif text-2xl font-bold transition-colors duration-200"
+      style={{ color: 'var(--text-primary)' }}
+      onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-gold)'}
+      onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
+    >
+      SARAH GRAVES
+    </Link>
+
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
       <div 
         className="flex items-center gap-1 p-1.5 rounded-full shadow-lg shadow-black/5"
