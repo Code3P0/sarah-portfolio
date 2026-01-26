@@ -248,27 +248,27 @@ export default function AboutPage() {
         </div>
 
         {/* Contact Section */}
-        <section id="contact" className="mt-16 scroll-mt-24">
+        <section id="contact" className="mt-20 pt-16 scroll-mt-32">
           <h2
-            className="uppercase tracking-widest text-xs mb-4"
-            style={{ color: 'var(--text-secondary)' }}
+            className="font-serif text-3xl font-bold mb-8"
+            style={{ color: 'var(--text-primary)' }}
           >
-            Contact
+            Get in Touch
           </h2>
-          <div className="space-y-3">
+          <div className="space-y-4">
             <a
               href="mailto:sarahkgraves2@gmail.com"
-              className="block font-sans text-lg transition-colors hover:text-[var(--accent-gold)]"
+              className="block font-sans text-lg transition-colors hover:text-[var(--accent-gold)] hover:underline"
               style={{ color: 'var(--text-primary)' }}
             >
               sarahkgraves2@gmail.com
             </a>
-            <div className="flex gap-6">
+            <div className="flex gap-6 flex-wrap">
               <a
                 href="https://linkedin.com/in/sarahkgraves"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-sans text-lg transition-colors hover:text-[var(--accent-gold)]"
+                className="font-sans text-lg transition-colors hover:text-[var(--accent-gold)] hover:underline"
                 style={{ color: 'var(--text-primary)' }}
               >
                 LinkedIn
@@ -277,7 +277,7 @@ export default function AboutPage() {
                 href="https://instagram.com/sarahkgraves"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-sans text-lg transition-colors hover:text-[var(--accent-gold)]"
+                className="font-sans text-lg transition-colors hover:text-[var(--accent-gold)] hover:underline"
                 style={{ color: 'var(--text-primary)' }}
               >
                 Instagram
@@ -286,7 +286,7 @@ export default function AboutPage() {
                 href="https://x.com/sarahkgraves"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-sans text-lg transition-colors hover:text-[var(--accent-gold)]"
+                className="font-sans text-lg transition-colors hover:text-[var(--accent-gold)] hover:underline"
                 style={{ color: 'var(--text-primary)' }}
               >
                 X
