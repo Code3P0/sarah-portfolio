@@ -180,22 +180,99 @@ body {
   animation: auroraWave3 55s ease-in-out infinite;
 }
 
-/* ===== Cloud Drift Animation (Light Mode) ===== */
-/* All clouds drift together in the same direction - gentle rightward flow */
-@keyframes cloudDrift {
+/* ===== Cloud Drift Animations (Light Mode) ===== */
+/* Noticeable cloud movement - dramatic enough to see clearly */
+
+/* Primary drift - sweeping horizontal movement */
+@keyframes cloudDrift1 {
   0% {
-    transform: translateX(-80px) translateY(0);
+    transform: translateX(0) translateY(0) scale(1);
+  }
+  25% {
+    transform: translateX(150px) translateY(-25px) scale(1.03);
   }
   50% {
-    transform: translateX(80px) translateY(-8px);
+    transform: translateX(280px) translateY(-10px) scale(1.02);
+  }
+  75% {
+    transform: translateX(140px) translateY(-30px) scale(1.04);
   }
   100% {
-    transform: translateX(-80px) translateY(0);
+    transform: translateX(0) translateY(0) scale(1);
+  }
+}
+
+/* Secondary drift - opposite direction, dramatic */
+@keyframes cloudDrift2 {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+  }
+  25% {
+    transform: translateX(-120px) translateY(20px) scale(1.02);
+  }
+  50% {
+    transform: translateX(-250px) translateY(10px) scale(1.03);
+  }
+  75% {
+    transform: translateX(-130px) translateY(25px) scale(1.02);
+  }
+  100% {
+    transform: translateX(0) translateY(0) scale(1);
+  }
+}
+
+/* Tertiary drift - diagonal movement with bobbing */
+@keyframes cloudDrift3 {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+  }
+  20% {
+    transform: translateX(100px) translateY(-40px) scale(1.03);
+  }
+  40% {
+    transform: translateX(200px) translateY(-20px) scale(1.02);
+  }
+  60% {
+    transform: translateX(180px) translateY(-50px) scale(1.04);
+  }
+  80% {
+    transform: translateX(80px) translateY(-30px) scale(1.02);
+  }
+  100% {
+    transform: translateX(0) translateY(0) scale(1);
+  }
+}
+
+/* Fourth drift - slower but still visible */
+@keyframes cloudDrift4 {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+  }
+  33% {
+    transform: translateX(180px) translateY(-15px) scale(1.02);
+  }
+  66% {
+    transform: translateX(100px) translateY(-35px) scale(1.03);
+  }
+  100% {
+    transform: translateX(0) translateY(0) scale(1);
   }
 }
 
 .animate-cloud-drift {
-  animation: cloudDrift 60s linear infinite;
+  animation: cloudDrift1 30s ease-in-out infinite;
+}
+
+.animate-cloud-drift-2 {
+  animation: cloudDrift2 25s ease-in-out infinite;
+}
+
+.animate-cloud-drift-3 {
+  animation: cloudDrift3 35s ease-in-out infinite;
+}
+
+.animate-cloud-drift-4 {
+  animation: cloudDrift4 40s ease-in-out infinite;
 }
 
 /* ===== Hero Welcome Text ===== */

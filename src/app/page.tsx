@@ -122,6 +122,157 @@ function HoverLink({ href, children, external = false }: { href: string; childre
   )
 }
 
+// Featured card particle type
+interface FeaturedParticle {
+  id: string
+  x: number
+  y: number
+  icon: string
+  direction: number
+  distance: number
+  duration: number
+}
+
+// Featured card with gold outline and particle effect
+function FeaturedCard() {
+  const [isHovered, setIsHovered] = useState(false)
+  const [cardParticles, setCardParticles] = useState<FeaturedParticle[]>([])
+  const cardRef = useRef<HTMLAnchorElement>(null)
+  const lastCardPosRef = useRef({ x: 0, y: 0 })
+  const cardDistanceRef = useRef(0)
+
+  const featuredIcons = ['/images/icon1.png', '/images/icon2.png', '/images/icon3.png', '/images/icon4.png']
+
+  const handleCardMouseMove = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!cardRef.current) return
+
+    const rect = cardRef.current.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+
+    const dx = x - lastCardPosRef.current.x
+    const dy = y - lastCardPosRef.current.y
+    const distance = Math.sqrt(dx * dx + dy * dy)
+
+    cardDistanceRef.current += distance
+    lastCardPosRef.current = { x, y }
+
+    const spawnThreshold = 80 + Math.random() * 40
+    if (cardDistanceRef.current >= spawnThreshold) {
+      cardDistanceRef.current = 0
+
+      const numParticles = Math.random() > 0.6 ? 2 : 1
+      const newParticles: FeaturedParticle[] = []
+
+      for (let i = 0; i < numParticles; i++) {
+        newParticles.push({
+          id: `card-${Date.now()}-${i}-${Math.random()}`,
+          x,
+          y,
+          icon: featuredIcons[Math.floor(Math.random() * featuredIcons.length)],
+          direction: Math.random() * Math.PI * 2,
+          distance: 40 + Math.random() * 40,
+          duration: 0.9 + Math.random() * 0.5,
+        })
+      }
+
+      setCardParticles(prev => [...prev, ...newParticles])
+    }
+  }, [])
+
+  const removeCardParticle = useCallback((id: string) => {
+    setCardParticles(prev => prev.filter(p => p.id !== id))
+  }, [])
+
+  return (
+    <motion.a
+      ref={cardRef}
+      href="https://www.instagram.com/reel/example/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block relative p-6 rounded-xl overflow-hidden transition-colors"
+      style={{
+        background: 'var(--bg-secondary)',
+        border: '2px solid transparent',
+      }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      onMouseMove={handleCardMouseMove}
+      animate={{
+        borderColor: isHovered ? 'var(--accent-gold)' : 'transparent',
+        scale: isHovered ? 1.02 : 1,
+        boxShadow: isHovered
+          ? '0 0 30px rgba(212,175,55,0.4), 0 0 60px rgba(212,175,55,0.2)'
+          : '0 0 0 rgba(212,175,55,0)',
+      }}
+      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+    >
+      {/* Particle effects */}
+      <AnimatePresence>
+        {cardParticles.map(particle => {
+          const endX = Math.cos(particle.direction) * particle.distance
+          const endY = Math.sin(particle.direction) * particle.distance
+
+          return (
+            <motion.img
+              key={particle.id}
+              src={particle.icon}
+              alt=""
+              className="absolute w-4 h-4 md:w-5 md:h-5 pointer-events-none z-20 dark:invert"
+              style={{
+                left: particle.x,
+                top: particle.y,
+                filter: 'sepia(100%) saturate(300%) brightness(90%) hue-rotate(10deg)',
+              }}
+              initial={{ opacity: 1, scale: 1, x: -8, y: -8 }}
+              animate={{
+                opacity: 0,
+                scale: 0.4,
+                x: endX - 8,
+                y: endY - 8,
+              }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: particle.duration, ease: 'easeOut' }}
+              onAnimationComplete={() => removeCardParticle(particle.id)}
+            />
+          )
+        })}
+      </AnimatePresence>
+
+      {/* Card content */}
+      <div className="relative z-10">
+        <div className="flex items-center justify-between mb-3">
+          <span
+            className="uppercase tracking-widest text-xs"
+            style={{ color: 'var(--text-secondary)' }}
+          >
+            Instagram Reel
+          </span>
+          <motion.span
+            className="text-xs"
+            animate={{ color: isHovered ? 'var(--accent-gold)' : 'var(--text-secondary)' }}
+          >
+            ↗
+          </motion.span>
+        </div>
+        <motion.h3
+          className="font-serif text-xl md:text-2xl font-semibold"
+          animate={{ color: isHovered ? 'var(--accent-gold)' : 'var(--text-primary)' }}
+          transition={{ duration: 0.2 }}
+        >
+          My conversation with Kevin Durant about sports, business, and building
+        </motion.h3>
+        <p
+          className="mt-2 text-sm"
+          style={{ color: 'var(--text-secondary)' }}
+        >
+          A candid talk about the intersection of athletics and entrepreneurship
+        </p>
+      </div>
+    </motion.a>
+  )
+}
+
 // Project link with dramatic glow effect
 function ProjectLink({ href, children }: { href: string; children: string }) {
   const [isHovered, setIsHovered] = useState(false)
@@ -132,25 +283,27 @@ function ProjectLink({ href, children }: { href: string; children: string }) {
         className="cursor-pointer font-bold inline-block relative"
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
+        animate={{ scale: isHovered ? 1.05 : 1 }}
+        transition={{ type: "spring", stiffness: 400, damping: 25 }}
       >
-        {/* Glow orb behind text */}
+        {/* Glow orb behind text - brighter for light mode visibility */}
         <motion.span
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[150px] h-[60px] pointer-events-none -z-10"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[80px] pointer-events-none -z-10"
           style={{
-            background: 'radial-gradient(ellipse at center, rgba(212,175,55,0.6) 0%, rgba(255,182,193,0.4) 30%, transparent 70%)',
-            filter: 'blur(20px)',
+            background: 'radial-gradient(ellipse at center, rgba(255,215,0,0.7) 0%, rgba(212,175,55,0.5) 40%, transparent 70%)',
+            filter: 'blur(25px)',
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: isHovered ? 1 : 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
         />
 
-        {/* Text with glow */}
+        {/* Text with glow - brighter gold for light mode */}
         <span
-          className="relative z-10 transition-[text-shadow] duration-200"
+          className="relative z-10 transition-all duration-200"
           style={{
-            color: isHovered ? 'var(--project-hover-text)' : 'var(--text-primary)',
-            textShadow: isHovered ? 'var(--project-hover-glow)' : 'none',
+            color: isHovered ? '#B8860B' : 'var(--text-primary)',
+            textShadow: isHovered ? '0 0 30px rgba(255,215,0,0.8), 0 0 60px rgba(212,175,55,0.6)' : 'none',
           }}
         >
           {children}
@@ -263,13 +416,13 @@ export default function Home() {
                 top: `${star.y}%`,
                 width: star.size,
                 height: star.size,
-                filter: 'invert(1) brightness(1.5)',
-                opacity: star.opacity,
+                filter: 'invert(1) brightness(2) drop-shadow(0 0 6px rgba(255,255,255,0.4)) drop-shadow(0 0 12px rgba(200,180,255,0.3))',
+                opacity: star.opacity * 0.6,
               }}
               animate={{
                 y: [0, -8, 0, 6, 0],
                 x: [0, 4, 0, -3, 0],
-                opacity: [star.opacity, star.opacity * 1.3, star.opacity, star.opacity * 0.8, star.opacity],
+                opacity: [star.opacity * 0.5, star.opacity * 0.7, star.opacity * 0.5, star.opacity * 0.4, star.opacity * 0.5],
               }}
               transition={{
                 duration: star.duration,
@@ -283,44 +436,52 @@ export default function Home() {
 
         {/* Real cloud images - light mode only */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden block dark:hidden">
-          {/* Cloud 1 - large, top right */}
+          {/* Cloud 1 - large, top right - slow majestic drift */}
           <img
             src="/images/cloud1.png"
             alt=""
-            className="absolute w-[600px] md:w-[850px] opacity-35 animate-cloud-drift"
+            className="absolute w-[600px] md:w-[850px] opacity-40 animate-cloud-drift"
             style={{ top: '0%', right: '-15%' }}
           />
 
-          {/* Cloud 2 - large, left side */}
+          {/* Cloud 2 - large, left side - reverse direction drift */}
           <img
             src="/images/cloud2.png"
             alt=""
-            className="absolute w-[550px] md:w-[750px] opacity-30 animate-cloud-drift"
-            style={{ top: '15%', left: '-20%', animationDelay: '-8s' }}
+            className="absolute w-[550px] md:w-[750px] opacity-35 animate-cloud-drift-2"
+            style={{ top: '15%', left: '-20%', animationDelay: '-12s' }}
           />
 
-          {/* Cloud 3 - large, top center */}
+          {/* Cloud 3 - top center - gentle bobbing */}
           <img
             src="/images/cloud3.png"
             alt=""
-            className="absolute w-[450px] md:w-[650px] opacity-30 animate-cloud-drift"
-            style={{ top: '-5%', left: '20%', animationDelay: '-15s' }}
+            className="absolute w-[450px] md:w-[650px] opacity-35 animate-cloud-drift-3"
+            style={{ top: '-5%', left: '20%', animationDelay: '-20s' }}
           />
 
-          {/* Cloud 4 - large, lower area */}
+          {/* Cloud 4 - lower area - slow background drift */}
           <img
             src="/images/cloud4.png"
             alt=""
-            className="absolute w-[500px] md:w-[700px] opacity-25 animate-cloud-drift"
-            style={{ top: '40%', left: '-10%', animationDelay: '-22s' }}
+            className="absolute w-[500px] md:w-[700px] opacity-30 animate-cloud-drift-4"
+            style={{ top: '40%', left: '-10%', animationDelay: '-35s' }}
           />
 
-          {/* Cloud 1 duplicate - far right, staggered */}
+          {/* Cloud 5 - far right background - very slow */}
           <img
             src="/images/cloud1.png"
             alt=""
-            className="absolute w-[550px] md:w-[750px] opacity-30 animate-cloud-drift"
-            style={{ top: '25%', right: '-25%', animationDelay: '-30s' }}
+            className="absolute w-[550px] md:w-[750px] opacity-25 animate-cloud-drift-4"
+            style={{ top: '25%', right: '-25%', animationDelay: '-50s' }}
+          />
+
+          {/* Cloud 6 - additional depth layer */}
+          <img
+            src="/images/cloud2.png"
+            alt=""
+            className="absolute w-[400px] md:w-[550px] opacity-20 animate-cloud-drift-3"
+            style={{ top: '50%', right: '10%', animationDelay: '-40s' }}
           />
         </div>
 
@@ -371,15 +532,15 @@ export default function Home() {
         </div>
 
         {/* Welcome text */}
-        <div className="mt-16 max-w-4xl mx-auto text-center z-10 px-6">
+        <div className="mt-12 max-w-5xl mx-auto text-center z-10 px-6">
           <p
-            className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
+            className="font-serif text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed whitespace-nowrap"
             style={{ color: 'var(--text-primary)' }}
           >
-            Welcome! This is my personal brand — please explore.
+            Welcome to my corner of the internet! This is my personal brand — please explore.
           </p>
           <p
-            className="font-serif text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mt-4"
+            className="font-serif text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed mt-3"
             style={{ color: 'var(--text-primary)' }}
           >
             <Link
@@ -422,7 +583,7 @@ export default function Home() {
       <div className="max-w-4xl mx-auto px-6">
         {/* I am */}
         <section className="py-16">
-          <p className="text-2xl md:text-3xl font-serif">
+          <p className="text-3xl md:text-4xl lg:text-5xl font-serif">
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I am</span>
             <HoverItem>Texas Women's Basketball</HoverItem>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
@@ -434,7 +595,7 @@ export default function Home() {
 
         {/* I work */}
         <section className="py-16">
-          <p className="text-2xl md:text-3xl font-serif">
+          <p className="text-3xl md:text-4xl lg:text-5xl font-serif">
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I work</span>
             <HoverItem>RedBird Capital</HoverItem>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
@@ -446,7 +607,7 @@ export default function Home() {
 
         {/* I build */}
         <section className="py-16">
-          <p className="text-2xl md:text-3xl font-serif">
+          <p className="text-3xl md:text-4xl lg:text-5xl font-serif">
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I build</span>
             <ProjectLink href="/projects#path">Path</ProjectLink>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
@@ -460,7 +621,7 @@ export default function Home() {
 
         {/* I speak */}
         <section className="py-16">
-          <p className="text-2xl md:text-3xl font-serif">
+          <p className="text-3xl md:text-4xl lg:text-5xl font-serif">
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I speak</span>
             <HoverItem>NIL Economics</HoverItem>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
@@ -472,7 +633,7 @@ export default function Home() {
 
         {/* Contact */}
         <section className="py-16">
-          <p className="text-2xl md:text-3xl font-serif">
+          <p className="text-3xl md:text-4xl lg:text-5xl font-serif">
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">Contact</span>
             <HoverLink href="mailto:sarahkgraves2@gmail.com">Email</HoverLink>
             <span style={{ color: 'var(--text-secondary)' }} className="mx-2">·</span>
@@ -493,36 +654,7 @@ export default function Home() {
             FEATURED
           </h2>
 
-          <Link href="/projects#operators-lens">
-            <motion.div
-              className="rounded-2xl p-8 border-2 border-transparent cursor-pointer"
-              style={{ background: 'var(--text-primary)' }}
-              whileHover={{
-                scale: 1.02,
-                borderColor: 'var(--accent-gold)',
-              }}
-              transition={{ duration: 0.3 }}
-            >
-              <p
-                className="text-sm mb-3 opacity-70"
-                style={{ color: 'var(--bg-primary)' }}
-              >
-                Jan 2026 · Basketball, Content
-              </p>
-              <h3
-                className="font-serif text-3xl font-bold mb-2"
-                style={{ color: 'var(--bg-primary)' }}
-              >
-                The Operator's Lens: Follow the Money
-              </h3>
-              <p
-                className="text-lg opacity-80"
-                style={{ color: 'var(--bg-primary)' }}
-              >
-                Breaking down sports business through market analysis
-              </p>
-            </motion.div>
-          </Link>
+          <FeaturedCard />
         </section>
       </div>
 
