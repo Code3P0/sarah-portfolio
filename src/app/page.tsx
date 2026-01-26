@@ -383,7 +383,7 @@ export default function Home() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="min-h-[80vh] flex flex-col items-center justify-center relative overflow-hidden">
+      <section className="min-h-[60vh] flex flex-col items-center justify-center relative overflow-hidden pb-8">
         {/* Light mode sky gradient - deep blue fading to content bg */}
         <div
           className="absolute inset-0 block dark:hidden"
@@ -532,7 +532,7 @@ export default function Home() {
         </div>
 
         {/* Welcome text */}
-        <div className="mt-12 max-w-5xl mx-auto text-center z-10 px-6">
+        <div className="mt-6 max-w-5xl mx-auto text-center z-10 px-6">
           <p
             className="font-serif text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed whitespace-nowrap"
             style={{ color: 'var(--text-primary)' }}
@@ -553,36 +553,12 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-12 flex flex-col items-center z-10">
-          <span
-            className="text-xs tracking-[0.3em] mb-2"
-            style={{ color: 'var(--text-secondary)' }}
-          >
-            SCROLL
-          </span>
-          <motion.svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{ color: 'var(--text-secondary)' }}
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <polyline points="6 9 12 15 18 9" />
-          </motion.svg>
-        </div>
-      </section>
+        </section>
 
       {/* Content Sections */}
       <div className="max-w-4xl mx-auto px-6">
         {/* I am */}
-        <section className="py-16">
+        <section className="py-8">
           <p className="text-3xl md:text-4xl lg:text-5xl font-serif">
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I am</span>
             <HoverItem>Texas Women's Basketball</HoverItem>
@@ -594,7 +570,7 @@ export default function Home() {
         </section>
 
         {/* I work */}
-        <section className="py-16">
+        <section className="py-8">
           <p className="text-3xl md:text-4xl lg:text-5xl font-serif">
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I work</span>
             <HoverItem>RedBird Capital</HoverItem>
@@ -606,7 +582,7 @@ export default function Home() {
         </section>
 
         {/* I build */}
-        <section className="py-16">
+        <section className="py-8">
           <p className="text-3xl md:text-4xl lg:text-5xl font-serif">
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I build</span>
             <ProjectLink href="/projects#path">Path</ProjectLink>
@@ -620,7 +596,7 @@ export default function Home() {
         </section>
 
         {/* I speak */}
-        <section className="py-16">
+        <section className="py-8">
           <p className="text-3xl md:text-4xl lg:text-5xl font-serif">
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">I speak</span>
             <HoverItem>NIL Economics</HoverItem>
@@ -632,7 +608,7 @@ export default function Home() {
         </section>
 
         {/* Contact */}
-        <section className="py-16">
+        <section className="py-8">
           <p className="text-3xl md:text-4xl lg:text-5xl font-serif">
             <span style={{ color: 'var(--text-secondary)' }} className="mr-2">Contact</span>
             <HoverLink href="mailto:sarahkgraves2@gmail.com">Email</HoverLink>
@@ -646,7 +622,7 @@ export default function Home() {
         </section>
 
         {/* Featured Section */}
-        <section className="py-16">
+        <section className="py-8">
           <h2
             className="uppercase tracking-widest text-xs mb-6"
             style={{ color: 'var(--text-secondary)' }}
