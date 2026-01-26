@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -14,6 +15,7 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
+    <>
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
       <div 
         className="flex items-center gap-1 p-1.5 rounded-full shadow-lg shadow-black/5"
@@ -55,5 +57,11 @@ export default function Navigation() {
         })}
       </div>
     </nav>
+
+    {/* Theme toggle - fixed top right */}
+    <div className="fixed top-4 right-4 z-50">
+      <ThemeToggle />
+    </div>
+    </>
   );
 }
