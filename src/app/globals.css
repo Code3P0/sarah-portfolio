@@ -18,6 +18,9 @@
   --text-secondary: #6B6B6B;
   --accent-gold: #C9A227;
   --accent-gold-hover: #B8922A;
+  /* Project link hover effect */
+  --project-hover-text: #000000;
+  --project-hover-glow: 0 0 20px rgba(0,0,0,0.3), 0 0 40px rgba(0,0,0,0.2);
 }
 
 /* ===== Dark Mode ===== */
@@ -29,6 +32,9 @@
   --text-secondary: #A0A0A0;
   --accent-gold: #D4AF37;
   --accent-gold-hover: #E5C04B;
+  /* Project link hover effect */
+  --project-hover-text: #FFFFFF;
+  --project-hover-glow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.4);
 }
 
 /* ===== Base Styles ===== */
@@ -90,4 +96,116 @@ body {
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--text-secondary) var(--bg-secondary);
+}
+
+/* ===== Aurora Wave Animations (Smooth, Flowing) ===== */
+@keyframes auroraWave1 {
+  0% {
+    transform: translateX(-20%) rotate(-5deg) scaleY(1);
+    opacity: 0.2;
+  }
+  25% {
+    transform: translateX(0%) rotate(-8deg) scaleY(1.15);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateX(15%) rotate(-3deg) scaleY(0.9);
+    opacity: 0.25;
+  }
+  75% {
+    transform: translateX(5%) rotate(-6deg) scaleY(1.1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateX(-20%) rotate(-5deg) scaleY(1);
+    opacity: 0.2;
+  }
+}
+
+@keyframes auroraWave2 {
+  0% {
+    transform: translateX(-15%) rotate(-8deg) scaleY(1);
+    opacity: 0.15;
+  }
+  33% {
+    transform: translateX(10%) rotate(-5deg) scaleY(1.2);
+    opacity: 0.3;
+  }
+  66% {
+    transform: translateX(20%) rotate(-10deg) scaleY(0.85);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateX(-15%) rotate(-8deg) scaleY(1);
+    opacity: 0.15;
+  }
+}
+
+@keyframes auroraWave3 {
+  0% {
+    transform: translateX(-10%) rotate(-12deg) scaleY(1);
+    opacity: 0.12;
+  }
+  20% {
+    transform: translateX(5%) rotate(-8deg) scaleY(1.1);
+    opacity: 0.22;
+  }
+  40% {
+    transform: translateX(15%) rotate(-15deg) scaleY(0.95);
+    opacity: 0.18;
+  }
+  60% {
+    transform: translateX(10%) rotate(-10deg) scaleY(1.15);
+    opacity: 0.28;
+  }
+  80% {
+    transform: translateX(0%) rotate(-13deg) scaleY(1.05);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateX(-10%) rotate(-12deg) scaleY(1);
+    opacity: 0.12;
+  }
+}
+
+.animate-aurora-ribbon-1 {
+  animation: auroraWave1 35s ease-in-out infinite;
+}
+
+.animate-aurora-ribbon-2 {
+  animation: auroraWave2 45s ease-in-out infinite;
+}
+
+.animate-aurora-ribbon-3 {
+  animation: auroraWave3 55s ease-in-out infinite;
+}
+
+/* ===== Cloud Drift Animation (Light Mode) ===== */
+/* All clouds drift together in the same direction - gentle rightward flow */
+@keyframes cloudDrift {
+  0% {
+    transform: translateX(-80px) translateY(0);
+  }
+  50% {
+    transform: translateX(80px) translateY(-8px);
+  }
+  100% {
+    transform: translateX(-80px) translateY(0);
+  }
+}
+
+.animate-cloud-drift {
+  animation: cloudDrift 60s linear infinite;
+}
+
+/* ===== Hero Welcome Text ===== */
+.hero-welcome-text p {
+  color: #4A4A4A;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+}
+
+.dark .hero-welcome-text p {
+  color: var(--text-secondary);
+  text-shadow: none;
+  opacity: 0.85;
 }
