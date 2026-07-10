@@ -381,28 +381,32 @@ export default function Home() {
   }, [])
 
   return (
-    <main>
+    <main className="relative">
+      {/* Aurora lives here — outside overflow-hidden hero — so it bleeds past the section boundary */}
+      <div className="absolute top-0 left-0 right-0 pointer-events-none hidden dark:block" style={{ height: '120vh', zIndex: 0 }}>
+        <AuroraEffect />
+      </div>
+
       {/* Hero Section */}
-      <section className="min-h-[60vh] flex flex-col items-center justify-center relative overflow-hidden pb-8">
-        {/* Light mode sky gradient - deep blue fading to content bg */}
+      <section className="min-h-[60vh] flex flex-col items-center justify-center relative overflow-hidden pb-8" style={{ zIndex: 1 }}>
+        {/* Light mode sky gradient */}
         <div
           className="absolute inset-0 block dark:hidden"
           style={{
-            background: 'linear-gradient(to bottom, #4A90D9 0%, #87CEEB 30%, #B8D4E8 60%, #F5F5F3 100%)',
+            background: 'linear-gradient(to bottom, #4A90D9 0%, #87CEEB 28%, #C8DCE8 52%, #DDE8EE 70%, #F5F5F3 90%)',
           }}
         />
 
-        {/* Dark mode night sky gradient - deep indigo fading to content bg */}
+        {/* Light mode bottom fade */}
         <div
-          className="absolute inset-0 hidden dark:block"
+          className="absolute bottom-0 left-0 right-0 pointer-events-none block dark:hidden"
           style={{
-            background: 'linear-gradient(to bottom, #0a0f1a 0%, #0F0F0F 100%)',
+            height: '180px',
+            background: 'linear-gradient(to bottom, transparent 0%, #F5F5F3 100%)',
           }}
         />
 
         {/* Aurora/Nebula effect - dark mode only */}
-        <AuroraEffect />
-
         {/* Scattered stars - dark mode only */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden hidden dark:block z-[1]">
           {stars.map((star) => (
