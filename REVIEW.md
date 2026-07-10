@@ -25,7 +25,7 @@ Verification status as of this handoff (measured, not asserted):
 |---|---|
 | `next build` | ✅ passes — all 4 routes prerender static |
 | `tsc --noEmit` | ✅ clean (exit 0) |
-| ESLint | ⚠️ 11 errors, 8 warnings — see F3 (build does **not** fail on these) |
+| ESLint | ⚠️ 4 errors, 8 warnings — see F3 (build does **not** fail on these; was 11 errors before the StarField deletion) |
 | Header state machine | ✅ verified programmatically (hero glass / solid / dark glass) |
 | Keyboard rail nav | ✅ ArrowRight/Left scroll the focused rail; arrows have aria-labels |
 | Screenshots 1440+390, light+dark | ✅ all sections render, dark parity, no pure #000/#FFF |
@@ -80,21 +80,19 @@ Design tokens & utilities live in `app/globals.css`: `--canvas/--canvas-raised/-
 
 ## 5. Findings to review (ranked)
 
-**F1 — Rail loop duplicates interactive cards (a11y/keyboard).** `Rail` with `loop`
-renders 3 copies, so the Work rail exposes 15 focusable card links / DOM nodes for 5
-real items. Screen readers announce duplicates; keyboard tab order walks all 15.
-Recommend marking clone copies `aria-hidden` + making their links non-focusable
-(`tabindex=-1`/inert), keeping only the middle copy in the a11y tree. `Rail.tsx`.
+**F1 — Rail loop duplicates interactive cards (a11y/keyboard). ✅ RESOLVED.**
+Clone copies now carry `inert` + `aria-hidden`, so only the real (middle) copy is
+focusable/announced. Verified: 15 DOM cards, 10 inert, 4 focusable links (the MORE
+card has no link), keyboard scroll still works. `Rail.tsx`.
 
-**F2 — Scroll-reveal hides content until JS runs.** `.reveal` starts `opacity:0`;
-`ScrollReveal` reveals via IntersectionObserver after hydration. Text IS in the SSR
-HTML (crawlable), but with JS disabled or if hydration fails, Sections 2–6 are
-invisible. Consider a `<noscript>` reveal-off fallback or revealing above-the-fold
-content immediately. `ScrollReveal.tsx`, `globals.css .reveal`.
+**F2 — Scroll-reveal hides content until JS runs. ✅ RESOLVED.** Added a
+`<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>`
+in `layout.tsx`, so with JS disabled the reveal content is shown instead of blank.
+(Text was already in the SSR HTML for crawlers.)
 
-**F3 — ESLint: 11 errors, 8 warnings (build still passes).** Categorize before acting:
-- `react-hooks/set-state-in-effect` on `ThemeToggle`, `useStars` (page.tsx), `ScrollReveal`, `Rail` — legitimate client-init / observer patterns, not bugs, but the repo's flat config flags them as errors. Decide: refactor, or scope-disable the rule.
-- `react-hooks/purity` (7×) on `StarField.tsx` — `Math.random()` in render. **`StarField` is dead code** (0 imports) — deleting it removes these.
+**F3 — ESLint: 4 errors, 8 warnings (build still passes).** The 7 `react-hooks/purity`
+errors were removed by deleting `StarField` (F8). Remaining:
+- `react-hooks/set-state-in-effect` (4×) on `ThemeToggle`, `useStars` (page.tsx), `ScrollReveal`, `Rail` — legitimate client-init / observer patterns, not bugs, but the repo's flat config flags them as errors. **Open decision:** refactor or scope-disable the rule.
 - `@next/next/no-img-element` (8×) — see F5.
 
 **F4 — Everything is uncommitted.** Commit before handoff so the reviewer sees a clean diff (see §2).
@@ -105,7 +103,8 @@ content immediately. `ScrollReveal.tsx`, `globals.css .reveal`.
 
 **F7 — Muted-text contrast.** `--ink-muted` (#6B6B64 on #F5F5F3 light; #A0A0A0 on #0F0F0F dark) for captions/descriptions is ~4.5:1 — borderline WCAG AA for small text. Verify with a contrast checker; captions are 13px.
 
-**F8 — Orphaned components.** `Button`, `StarField`, `CloudField`, `hooks/useMousePosition` have 0 references. `Button` is intentional (design-system primitive kept for later); the others are stale from before the refactor and can be deleted. `StarField` also causes F3 errors.
+**F8 — Orphaned components. ✅ MOSTLY RESOLVED.** Deleted `StarField`, `CloudField`,
+`hooks/useMousePosition`. `Button` is intentionally kept (design-system primitive for later use).
 
 **F9 — Glyph radius exception.** Inline editorial glyphs use 8px radius (spec-mandated), deviating from the three-radii rule. Intentional; flagging for the record.
 

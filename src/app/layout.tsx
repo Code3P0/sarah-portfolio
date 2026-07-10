@@ -28,6 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${instrumentSerif.variable} ${dmSans.variable}`}>
       <body className="antialiased">
+        {/* Without JS the IntersectionObserver never runs, so force scroll-reveal
+            content visible instead of leaving sections blank. */}
+        <noscript>
+          <style>{`.reveal{opacity:1 !important;transform:none !important}`}</style>
+        </noscript>
         <Navigation />
         <div className="grain-overlay" />
         {children}

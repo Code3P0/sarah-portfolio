@@ -201,20 +201,27 @@ export default function Rail({
         className={`no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto rounded-[24px] outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)] ${canLoop ? 'px-[11vw] md:px-8' : gutterClassName}`}
         style={{ cursor: 'grab', scrollBehavior: 'smooth' }}
       >
-        {rendered.map((item, i) => (
-          <div
-            key={i}
-            data-card
-            className={`shrink-0 snap-center ${itemClassName}`}
-            style={{
-              transform: 'scale(var(--focus-scale, 1))',
-              opacity: 'var(--focus-opacity, 1)' as unknown as number,
-              transition: 'transform var(--dur-ui) var(--ease), opacity var(--dur-ui) var(--ease)',
-            }}
-          >
-            {item}
-          </div>
-        ))}
+        {rendered.map((item, i) => {
+          // With loop, only the middle copy is real/interactive; the flanking
+          // copies are decorative peeks — hide them from AT and tab order.
+          const isClone = canLoop && (i < items.length || i >= items.length * 2)
+          return (
+            <div
+              key={i}
+              data-card
+              aria-hidden={isClone || undefined}
+              inert={isClone || undefined}
+              className={`shrink-0 snap-center ${itemClassName}`}
+              style={{
+                transform: 'scale(var(--focus-scale, 1))',
+                opacity: 'var(--focus-opacity, 1)' as unknown as number,
+                transition: 'transform var(--dur-ui) var(--ease), opacity var(--dur-ui) var(--ease)',
+              }}
+            >
+              {item}
+            </div>
+          )
+        })}
       </div>
 
       {/* One-time mobile swipe hint */}
