@@ -21,6 +21,20 @@
   /* Project link hover effect */
   --project-hover-text: #000000;
   --project-hover-glow: 0 0 20px rgba(0,0,0,0.3), 0 0 40px rgba(0,0,0,0.2);
+
+  /* ===== Samara-style semantic tokens ===== */
+  --canvas: #F5F5F3;          /* warm off-white page */
+  --canvas-raised: #EDEDE9;   /* slightly raised tone for cards/placeholders */
+  --ink: #1A1A18;             /* warm near-black */
+  --ink-muted: #6B6B64;       /* muted ink for secondary text */
+  --line: rgba(26, 24, 20, 0.12); /* single hairline border color */
+  --accent: #C9A227;          /* single accent — buttons, links, resume only */
+  --shadow-lift: 0 8px 24px rgba(26, 24, 20, 0.10);
+
+  /* Exactly three radii site-wide */
+  --radius-lg: 24px;   /* image containers, large cards */
+  --radius-md: 12px;   /* images nested in cards */
+  --radius-pill: 999px;/* buttons, nav */
 }
 
 /* ===== Dark Mode ===== */
@@ -35,6 +49,15 @@
   /* Project link hover effect */
   --project-hover-text: #FFFFFF;
   --project-hover-glow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.4);
+
+  /* ===== Samara-style semantic tokens (dark) ===== */
+  --canvas: #0F0F0F;
+  --canvas-raised: #1A1A1A;
+  --ink: #F5F5F3;
+  --ink-muted: #A0A0A0;
+  --line: rgba(255, 255, 255, 0.14);
+  --accent: #D4AF37;
+  --shadow-lift: 0 8px 28px rgba(0, 0, 0, 0.45);
 }
 
 /* ===== Base Styles ===== */
@@ -291,4 +314,109 @@ body {
   color: var(--text-secondary);
   text-shadow: none;
   opacity: 0.85;
+}
+
+/* ===== Type scale — hierarchy from size, not weight ===== */
+.type-h1 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 400;
+  font-size: 44px;
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.type-h2 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.type-h3 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.type-body {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.type-caption {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+}
+@media (min-width: 768px) {
+  .type-h1 { font-size: 72px; }
+  .type-h2 { font-size: 44px; }
+  .type-h3 { font-size: 28px; }
+  .type-body { font-size: 17px; }
+}
+
+/* ===== Accent link — underline on hover only ===== */
+.link-accent {
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.link-accent:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+}
+
+/* ===== Card lift — hover only ===== */
+.card-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.card-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lift);
+}
+
+/* ===== Focus visibility ===== */
+:where(a, button, [role="button"], input, textarea, select):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ===== Floating wordmark — legible over the hero without a glass chip.
+   The halo is the canvas color, so it's always a soft light halo over the
+   light hero and a soft dark halo over the dark hero — contrast in both. ===== */
+.wordmark-legible {
+  text-shadow:
+    0 0 18px var(--canvas),
+    0 0 8px var(--canvas),
+    0 1px 2px var(--canvas);
+}
+
+/* ===== Hero page-load fade (600ms ease-out) ===== */
+@keyframes heroFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.hero-fade {
+  animation: heroFade 600ms ease-out both;
+}
+
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

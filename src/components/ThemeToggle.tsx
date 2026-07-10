@@ -24,11 +24,23 @@ export function ThemeToggle() {
     document.documentElement.classList.toggle('dark', newTheme === 'dark');
   };
 
+  // Frosted-glass circle so the toggle stays legible over the hero in both modes
+  const frostedCircle = {
+    background: 'color-mix(in srgb, var(--canvas) 65%, transparent)',
+    backdropFilter: 'blur(12px)',
+    WebkitBackdropFilter: 'blur(12px)',
+    border: '1px solid var(--line)',
+  } as const;
+
   // Prevent hydration mismatch
   if (!mounted) {
     return (
-      <button className="p-2" aria-label="Toggle theme">
-        <div className="w-5 h-5" />
+      <button
+        className="flex h-10 w-10 items-center justify-center rounded-full"
+        style={frostedCircle}
+        aria-label="Toggle theme"
+      >
+        <div className="h-5 w-5" />
       </button>
     );
   }
@@ -36,8 +48,8 @@ export function ThemeToggle() {
   return (
     <motion.button
       onClick={toggleTheme}
-      className="p-2 transition-colors"
-      style={{ color: 'var(--text-secondary)' }}
+      className="flex h-10 w-10 items-center justify-center rounded-full shadow-lg shadow-black/5 transition-colors"
+      style={{ color: 'var(--text-secondary)', ...frostedCircle }}
       whileHover={{ color: 'var(--accent-gold)' }}
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
     >

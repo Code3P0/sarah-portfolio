@@ -19,7 +19,7 @@ export default function Navigation() {
     {/* SG Logo - top left */}
     <Link
       href="/"
-      className="fixed top-4 left-6 z-50 font-serif text-2xl font-bold transition-colors duration-200"
+      className="wordmark-legible fixed top-4 left-6 z-50 font-serif text-2xl font-normal tracking-wide transition-colors duration-200"
       style={{ color: 'var(--text-primary)' }}
       onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-gold)'}
       onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
@@ -28,11 +28,13 @@ export default function Navigation() {
     </Link>
 
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
-      <div 
+      <div
         className="flex items-center gap-1 p-1.5 rounded-full shadow-lg shadow-black/5"
-        style={{ 
-          background: 'var(--bg-secondary)',
-          border: '1px solid color-mix(in srgb, var(--text-secondary) 10%, transparent)',
+        style={{
+          background: 'color-mix(in srgb, var(--canvas) 65%, transparent)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: '1px solid var(--line)',
         }}
       >
         {navLinks.map((link) => {
@@ -59,7 +61,7 @@ export default function Navigation() {
                 <motion.span
                   layoutId="activeTab"
                   className="absolute inset-0 rounded-full"
-                  style={{ background: 'var(--bg-primary)' }}
+                  style={{ background: 'var(--canvas)' }}
                   transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                 />
               )}
