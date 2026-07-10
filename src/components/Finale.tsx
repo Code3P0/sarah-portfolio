@@ -9,7 +9,7 @@ export default function Finale() {
     <section className="p-4 md:p-6">
       <div
         data-nav-dark
-        className="relative flex min-h-[58vh] items-end overflow-hidden rounded-[24px] p-8 sm:p-14"
+        className="relative flex min-h-[40vh] items-end overflow-hidden rounded-[24px] p-8 sm:p-14"
         style={{
           background: 'linear-gradient(155deg, #26262E 0%, #1B1B21 55%, #141419 100%)',
           border: '1px solid rgba(255,255,255,0.10)',
