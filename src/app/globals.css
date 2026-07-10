@@ -86,10 +86,9 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Dark mode: seamless indigo-to-black gradient across full page */
+/* Dark mode: clean flat dark canvas (no gradient) */
 .dark body {
-  background: linear-gradient(to bottom, #0a0f1a 0%, #0d1122 15%, #0f1019 30%, #0F0F0F 50%);
-  background-attachment: fixed;
+  background: var(--canvas);
 }
 
 /* ===== Utility Classes ===== */
@@ -437,6 +436,52 @@ body {
 .nav-link:hover {
   background: color-mix(in srgb, var(--ink) 10%, transparent);
 }
+
+/* ===== ImageFrame — site-wide photo grade ==================================
+   Rest: faint grain + slightly desaturated/dimmed.
+   Hover OR in-view (.is-active, set by IntersectionObserver for touch): grain
+   fades, full saturation/brightness, image scales 1.03 INSIDE its fixed frame.
+   Wrapped in @layer components so `absolute`/`lg:absolute` utilities on callers
+   can still override the frame's default position. */
+@layer components {
+.img-frame {
+  position: relative;
+  overflow: hidden;
+}
+.img-frame img {
+  filter: saturate(0.88) brightness(0.93);
+  transform: scale(1);
+  transition: filter var(--dur-state) var(--ease), transform var(--dur-state) var(--ease);
+  will-change: transform, filter;
+}
+.img-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.09;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='if-noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23if-noise)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  transition: opacity var(--dur-state) var(--ease);
+}
+.img-frame:hover img,
+.img-frame.is-active img {
+  filter: saturate(1) brightness(1);
+  transform: scale(1.03);
+}
+.img-frame:hover::after,
+.img-frame.is-active::after {
+  opacity: 0.03;
+}
+@media (prefers-reduced-motion: reduce) {
+  .img-frame img,
+  .img-frame:hover img,
+  .img-frame.is-active img {
+    transform: none !important;
+  }
+}
+} /* end @layer components */
 
 /* ===== Focus visibility ===== */
 :where(a, button, [role="button"], input, textarea, select):focus-visible {

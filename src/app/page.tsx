@@ -1,5 +1,4 @@
 'use client'
-import { motion } from 'framer-motion'
 import Footer from '@/components/Footer'
 import Section from '@/components/Section'
 import ScrollReveal from '@/components/ScrollReveal'
@@ -9,39 +8,6 @@ import WorkRail from '@/components/WorkRail'
 import PressSection from '@/components/PressSection'
 import FeatureStory from '@/components/FeatureStory'
 import Finale from '@/components/Finale'
-import { AuroraEffect } from '@/components/AuroraEffect'
-import { useState, useEffect } from 'react'
-
-// Star configuration for dark mode background
-interface Star {
-  id: number
-  x: number
-  y: number
-  size: number
-  opacity: number
-  duration: number
-  delay: number
-}
-
-// Random star positions must be produced on the client only (SSR + client
-// generation causes a hydration mismatch), so we start empty and populate after mount.
-function useStars(count: number): Star[] {
-  const [stars, setStars] = useState<Star[]>([])
-  useEffect(() => {
-    setStars(
-      Array.from({ length: count }, (_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: 12 + Math.random() * 16,
-        opacity: 0.15 + Math.random() * 0.25,
-        duration: 4 + Math.random() * 4,
-        delay: Math.random() * 4,
-      }))
-    )
-  }, [count])
-  return stars
-}
 
 // Section 6 — Currently (two-column)
 const currently = [
@@ -56,94 +22,50 @@ const currently = [
 ]
 
 export default function Home() {
-  const stars = useStars(18)
-
   return (
     <main className="relative overflow-x-hidden">
-      {/* SECTION 1 — HERO: inset sky-gradient rounded rectangle (kept as-is) */}
-      <div className="hero-fade p-4 md:p-6">
-        <section
-          data-hero
-          className="relative flex min-h-[80vh] flex-col items-center justify-center overflow-hidden rounded-[24px]"
-        >
-          {/* Light-mode sky gradient */}
-          <div
-            className="absolute inset-0 block dark:hidden"
-            style={{ background: 'linear-gradient(to bottom, #4A90D9 0%, #87CEEB 30%, #C8DCE8 60%, #DDE8EE 82%, #EDEDE9 100%)' }}
+      {/* SECTION 1 — HERO: clean canvas, script wordmark + one action */}
+      <section
+        data-hero
+        className="hero-fade flex min-h-[84vh] flex-col items-center justify-center px-6"
+      >
+        {/* Script wordmark — the primary identity. Black ink inverts to white in
+            dark mode (white_signature.gif is a duplicate dark asset), full width
+            so the whole "Sarah Graves" is always visible (no clip). */}
+        <div className="w-full max-w-4xl">
+          <img
+            src="/images/black_signature.gif"
+            alt="Sarah Graves"
+            className="mx-auto block w-full dark:invert"
           />
-          {/* Dark-mode night sky */}
-          <div
-            className="absolute inset-0 hidden dark:block"
-            style={{ background: 'linear-gradient(to bottom, #0a0f1a 0%, #0d1122 45%, #0f1019 100%)' }}
-          />
-          {/* Aurora ribbons — dark only */}
-          <div className="pointer-events-none absolute inset-0 hidden dark:block">
-            <AuroraEffect />
-          </div>
-          {/* Scattered stars — dark only */}
-          <div className="pointer-events-none absolute inset-0 hidden overflow-hidden dark:block">
-            {stars.map((star) => (
-              <motion.img
-                key={star.id}
-                src="/images/icon4.png"
-                alt=""
-                className="absolute"
-                style={{
-                  left: `${star.x}%`,
-                  top: `${star.y}%`,
-                  width: star.size,
-                  height: star.size,
-                  filter: 'invert(1) brightness(2) drop-shadow(0 0 6px rgba(255,255,255,0.4)) drop-shadow(0 0 12px rgba(200,180,255,0.3))',
-                  opacity: star.opacity * 0.6,
-                }}
-                animate={{
-                  y: [0, -8, 0, 6, 0],
-                  x: [0, 4, 0, -3, 0],
-                  opacity: [star.opacity * 0.5, star.opacity * 0.7, star.opacity * 0.5, star.opacity * 0.4, star.opacity * 0.5],
-                }}
-                transition={{ duration: star.duration, repeat: Infinity, delay: star.delay, ease: 'easeInOut' }}
-              />
-            ))}
-          </div>
-          {/* Drifting clouds — light only */}
-          <div className="pointer-events-none absolute inset-0 block overflow-hidden dark:hidden">
-            <img src="/images/cloud1.png" alt="" className="absolute w-[600px] opacity-40 animate-cloud-drift md:w-[850px]" style={{ top: '0%', right: '-15%' }} />
-            <img src="/images/cloud2.png" alt="" className="absolute w-[550px] opacity-35 animate-cloud-drift-2 md:w-[750px]" style={{ top: '15%', left: '-20%', animationDelay: '-12s' }} />
-            <img src="/images/cloud3.png" alt="" className="absolute w-[450px] opacity-35 animate-cloud-drift-3 md:w-[650px]" style={{ top: '-5%', left: '20%', animationDelay: '-20s' }} />
-            <img src="/images/cloud4.png" alt="" className="absolute w-[500px] opacity-30 animate-cloud-drift-4 md:w-[700px]" style={{ top: '40%', left: '-10%', animationDelay: '-35s' }} />
-          </div>
+        </div>
 
-          {/* Script wordmark — the primary identity, large and central (both modes) */}
-          <div className="relative z-10 w-full max-w-4xl px-6">
-            <img src="/images/black_signature.gif" alt="Sarah Graves" className="w-full transition-[filter] duration-200 dark:invert" />
-          </div>
-          {/* Single action — glassy pill, jumps straight to the contact panel */}
-          <div className="relative z-10 mt-12">
-            <button
-              type="button"
-              onClick={() => {
-                const el = document.getElementById('contact')
-                if (el) el.scrollIntoView({ behavior: 'instant' as ScrollBehavior })
-                history.replaceState(null, '', '#contact')
-              }}
-              className="hero-cta inline-flex items-center justify-center rounded-full px-12 py-5 text-xl font-medium"
-            >
-              Contact
-            </button>
-          </div>
-        </section>
-      </div>
+        {/* One action — glassy pill, jumps to the contact panel (no scroll anim) */}
+        <div className="mt-10">
+          <button
+            type="button"
+            onClick={() => {
+              const el = document.getElementById('contact')
+              if (el) el.scrollIntoView({ behavior: 'instant' as ScrollBehavior })
+              history.replaceState(null, '', '#contact')
+            }}
+            className="hero-cta inline-flex items-center justify-center rounded-full px-12 py-5 text-xl font-medium"
+          >
+            Contact
+          </button>
+        </div>
+      </section>
 
       {/* SECTION 2 — EDITORIAL STATEMENT (inline image glyphs) */}
       <EditorialStatement />
 
-      {/* SECTION 3 — SELECTED WORK RAIL */}
+      {/* SECTION 3 — SELECTED WORK */}
       <WorkRail />
 
       {/* SECTION 4 — PRESS */}
       <PressSection />
 
-      {/* SECTION 5 — FEATURE STORY (KD interview slot) */}
+      {/* SECTION 5 — FEATURE STORY */}
       <FeatureStory />
 
       {/* SECTION 6 — CURRENTLY (two-column) */}

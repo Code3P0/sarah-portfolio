@@ -8,8 +8,10 @@ interface VideoSlotProps {
   caption?: string
   alt: string
   className?: string
-  /** Self-hosted/embedded source. When absent a placeholder is rendered. */
+  /** Self-hosted/embedded source (mp4). When absent a placeholder is rendered. */
   src?: string
+  /** Optional webm source, offered first for smaller/efficient playback. */
+  srcWebm?: string
   poster?: string
 }
 
@@ -20,7 +22,7 @@ interface VideoSlotProps {
  * pause/play control, and supports a poster. Respects reduced-motion (no
  * autoplay).
  */
-export default function VideoSlot({ ratio = '4:5', caption, alt, className = '', src, poster }: VideoSlotProps) {
+export default function VideoSlot({ ratio = '4:5', caption, alt, className = '', src, srcWebm, poster }: VideoSlotProps) {
   const ref = useRef<HTMLVideoElement | null>(null)
   const [playing, setPlaying] = useState(false)
   const [inView, setInView] = useState(false)
@@ -28,6 +30,7 @@ export default function VideoSlot({ ratio = '4:5', caption, alt, className = '',
   useEffect(() => {
     const v = ref.current
     if (!v || !src) return
+    v.muted = true // set as property (avoids the SSR `muted` attribute hydration mismatch)
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const obs = new IntersectionObserver(
       ([e]) => {
@@ -74,14 +77,14 @@ export default function VideoSlot({ ratio = '4:5', caption, alt, className = '',
       <video
         ref={ref}
         className="absolute inset-0 h-full w-full object-cover"
-        muted
         loop
         playsInline
         poster={poster}
         aria-label={alt}
         preload="metadata"
       >
-        <source src={src} />
+        {srcWebm && <source src={srcWebm} type="video/webm" />}
+        <source src={src} type="video/mp4" />
       </video>
 
       <button

@@ -16,8 +16,25 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  // Set NEXT_PUBLIC_SITE_URL to the real domain in production so OG/Twitter
+  // image URLs resolve absolutely; the fallback is a placeholder.
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://sarahgraves.com"),
   title: "Sarah Graves",
-  description: "Texas Women's Basketball player building at the intersection of sports, media, and technology.",
+  description: "Guard at Texas. Building in sports, media, and AI.",
+  openGraph: {
+    type: "website",
+    title: "Sarah Graves",
+    description: "Guard at Texas. Building in sports, media, and AI.",
+    images: [
+      { url: "/images/sarah-graves-face-main.jpg", width: 1200, height: 630, alt: "Sarah Graves" },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sarah Graves",
+    description: "Guard at Texas. Building in sports, media, and AI.",
+    images: ["/images/sarah-graves-face-main.jpg"],
+  },
 };
 
 export default function RootLayout({

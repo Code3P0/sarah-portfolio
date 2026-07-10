@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import Footer from '@/components/Footer'
 import Section from '@/components/Section'
-import Placeholder from '@/components/Placeholder'
+import VideoSlot from '@/components/VideoSlot'
 import ContactBand from '@/components/ContactBand'
 
 const background = [
@@ -26,7 +26,15 @@ export default function AboutPage() {
       {/* Title + video */}
       <Section className="!pb-0" containerClassName="pt-16">
         <h1 className="type-h1 mb-8">About</h1>
-        <Placeholder ratio="16:9" caption="FILM 001 · FALL 2026" />
+        <div className="max-w-sm">
+          <VideoSlot
+            ratio="1080/1544"
+            alt="Sarah Graves, Texas Women's Basketball guard, in a portrait video shoot"
+            src="/sarah-graves-texas-portrait.mp4"
+            srcWebm="/sarah-graves-texas-portrait.webm"
+            poster="/sarah-graves-texas-portrait-poster.jpg"
+          />
+        </div>
       </Section>
 
       {/* About content */}

@@ -18,7 +18,13 @@ export default function FeatureStory() {
           <span className="mb-8 mt-3 block h-px w-24" style={{ background: 'var(--line)' }} />
 
           <div className="relative">
-            <VideoSlot ratio="4:5" alt="In conversation — interview in production" />
+            <VideoSlot
+              ratio="1080/1544"
+              alt="Sarah Graves, Texas Women's Basketball guard, in a portrait video shoot"
+              src="/sarah-graves-texas-portrait.mp4"
+              srcWebm="/sarah-graves-texas-portrait.webm"
+              poster="/sarah-graves-texas-portrait-poster.jpg"
+            />
 
             <div
               className="mt-4 rounded-[24px] border p-5 md:absolute md:-bottom-8 md:-right-10 md:mt-0 md:w-64"

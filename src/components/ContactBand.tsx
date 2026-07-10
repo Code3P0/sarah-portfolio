@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import ImageFrame from '@/components/ImageFrame'
 
 const socials = [
   { label: 'LinkedIn', href: 'https://linkedin.com/in/sarahkgraves' },
@@ -19,10 +20,11 @@ export default function ContactBand() {
       style={{ background: 'var(--canvas-raised)', borderColor: 'var(--line)' }}
     >
       <div className="relative inline-block">
-        <img
+        <ImageFrame
           src="/images/sarah-headshot.jpg"
-          alt="Sarah Graves"
-          className="mx-auto mb-8 h-32 w-32 rounded-full object-cover sm:h-36 sm:w-36 lg:absolute lg:right-full lg:top-1/2 lg:mb-0 lg:mr-10 lg:h-36 lg:w-36 lg:-translate-y-1/2"
+          alt="Sarah Graves, Texas Women's Basketball guard, headshot"
+          sizes="144px"
+          className="mx-auto mb-8 block h-32 w-32 rounded-full sm:h-36 sm:w-36 lg:absolute lg:right-full lg:top-1/2 lg:mb-0 lg:mr-10 lg:h-36 lg:w-36 lg:-translate-y-1/2"
         />
         <div>
           <h2 className="type-h2">Get in Touch</h2>
