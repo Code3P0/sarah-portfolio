@@ -35,6 +35,13 @@
   --radius-lg: 24px;   /* image containers, large cards */
   --radius-md: 12px;   /* images nested in cards */
   --radius-pill: 999px;/* buttons, nav */
+
+  /* Motion tokens */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-ui: 200ms;      /* fast UI: 160-220ms */
+  --dur-state: 400ms;   /* state transitions: 350-450ms */
+  --dur-reveal: 620ms;  /* section reveals: 500-750ms */
+  --dur-media: 820ms;   /* media crossfades: 700-900ms */
 }
 
 /* ===== Dark Mode ===== */
@@ -392,16 +399,6 @@ body {
   border-radius: 6px;
 }
 
-/* ===== Floating wordmark — legible over the hero without a glass chip.
-   The halo is the canvas color, so it's always a soft light halo over the
-   light hero and a soft dark halo over the dark hero — contrast in both. ===== */
-.wordmark-legible {
-  text-shadow:
-    0 0 18px var(--canvas),
-    0 0 8px var(--canvas),
-    0 1px 2px var(--canvas);
-}
-
 /* ===== Hero page-load fade (600ms ease-out) ===== */
 @keyframes heroFade {
   from { opacity: 0; }
@@ -411,6 +408,38 @@ body {
   animation: heroFade 600ms ease-out both;
 }
 
+/* ===== Scroll reveal (opacity + 20px up; media adds a 1.015->1 scale) ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--dur-reveal) var(--ease), transform var(--dur-reveal) var(--ease);
+  will-change: opacity, transform;
+}
+.reveal-media {
+  transition-duration: var(--dur-media);
+}
+.reveal-media > * {
+  transform: scale(1.015);
+  transition: transform var(--dur-media) var(--ease);
+  will-change: transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.reveal-media.is-visible > * {
+  transform: none;
+}
+
+/* ===== Hide scrollbars on rails while keeping native scroll ===== */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* ===== Reduced motion ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -418,5 +447,10 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .reveal,
+  .reveal-media > * {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

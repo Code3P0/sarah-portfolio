@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 type Theme = 'light' | 'dark';
 
-export function ThemeToggle() {
+export function ThemeToggle({ overDark = false }: { overDark?: boolean }) {
   const [theme, setTheme] = useState<Theme>('dark');
   const [mounted, setMounted] = useState(false);
 
@@ -24,19 +24,31 @@ export function ThemeToggle() {
     document.documentElement.classList.toggle('dark', newTheme === 'dark');
   };
 
-  // Frosted-glass circle so the toggle stays legible over the hero in both modes
-  const frostedCircle = {
-    background: 'color-mix(in srgb, var(--canvas) 65%, transparent)',
-    backdropFilter: 'blur(12px)',
-    WebkitBackdropFilter: 'blur(12px)',
-    border: '1px solid var(--line)',
-  } as const;
+  // Frosted-glass circle so the toggle stays legible over the hero in both modes.
+  // Over dark full-bleed media it switches to a dark glass with a light border.
+  const frostedCircle = overDark
+    ? ({
+        background: 'rgba(12, 12, 14, 0.6)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        border: '1px solid rgba(255, 255, 255, 0.18)',
+        transition: 'background-color var(--dur-state) var(--ease), border-color var(--dur-state) var(--ease)',
+      } as const)
+    : ({
+        background: 'color-mix(in srgb, var(--canvas) 65%, transparent)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        border: '1px solid var(--line)',
+        transition: 'background-color var(--dur-state) var(--ease), border-color var(--dur-state) var(--ease)',
+      } as const);
+
+  const iconColor = overDark ? '#F5F5F3' : 'var(--text-secondary)';
 
   // Prevent hydration mismatch
   if (!mounted) {
     return (
       <button
-        className="flex h-10 w-10 items-center justify-center rounded-full"
+        className="flex h-11 w-11 items-center justify-center rounded-full"
         style={frostedCircle}
         aria-label="Toggle theme"
       >
@@ -48,8 +60,8 @@ export function ThemeToggle() {
   return (
     <motion.button
       onClick={toggleTheme}
-      className="flex h-10 w-10 items-center justify-center rounded-full shadow-lg shadow-black/5 transition-colors"
-      style={{ color: 'var(--text-secondary)', ...frostedCircle }}
+      className="flex h-11 w-11 items-center justify-center rounded-full shadow-lg shadow-black/5"
+      style={{ color: iconColor, ...frostedCircle }}
       whileHover={{ color: 'var(--accent-gold)' }}
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
     >
