@@ -63,12 +63,12 @@ export default function WorkRail() {
   ]
 
   return (
-    <Section>
+    <Section id="work" className="scroll-mt-28">
       <ScrollReveal>
         <p className="type-caption mb-8">Selected Work</p>
       </ScrollReveal>
       <ScrollReveal>
-        <Rail items={items} ariaLabel="Selected work" loop />
+        <Rail items={items} ariaLabel="Selected work" />
       </ScrollReveal>
     </Section>
   )

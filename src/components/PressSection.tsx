@@ -82,8 +82,8 @@ export default function PressSection() {
         <Rail
           items={items}
           ariaLabel="Press articles"
-          itemClassName="w-[72vw] max-w-[300px] md:w-[300px]"
-          gutterClassName="px-[13vw] md:px-[calc(50%-150px)]"
+          itemClassName="w-[min(340px,82vw)]"
+          viewportClassName="max-w-[460px]"
         />
       </ScrollReveal>
     </Section>

@@ -31,7 +31,7 @@ export default function RootLayout({
         {/* Without JS the IntersectionObserver never runs, so force scroll-reveal
             content visible instead of leaving sections blank. */}
         <noscript>
-          <style>{`.reveal{opacity:1 !important;transform:none !important}`}</style>
+          <style>{`.reveal,.page-anim{opacity:1 !important;transform:none !important}`}</style>
         </noscript>
         <Navigation />
         <div className="grain-overlay" />

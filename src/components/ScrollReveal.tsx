@@ -10,6 +10,8 @@ interface ScrollRevealProps {
   media?: boolean
   /** Delay before revealing, ms */
   delay?: number
+  /** Upward-rise distance in px (default 20) */
+  rise?: number
   as?: ElementType
 }
 
@@ -23,6 +25,7 @@ export default function ScrollReveal({
   className = '',
   media = false,
   delay = 0,
+  rise,
   as,
 }: ScrollRevealProps) {
   const Tag = (as ?? 'div') as ElementType
@@ -56,7 +59,10 @@ export default function ScrollReveal({
     <Tag
       ref={ref}
       className={`reveal ${media ? 'reveal-media' : ''} ${visible ? 'is-visible' : ''} ${className}`}
-      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+      style={{
+        ...(delay ? { transitionDelay: `${delay}ms` } : null),
+        ...(rise !== undefined ? ({ '--reveal-rise': `${rise}px` } as React.CSSProperties) : null),
+      }}
     >
       {children}
     </Tag>

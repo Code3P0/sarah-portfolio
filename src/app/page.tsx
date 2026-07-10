@@ -1,6 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
-import Link from 'next/link'
+import Button from '@/components/Button'
 import Footer from '@/components/Footer'
 import Section from '@/components/Section'
 import ScrollReveal from '@/components/ScrollReveal'
@@ -114,22 +114,13 @@ export default function Home() {
             <img src="/images/cloud4.png" alt="" className="absolute w-[500px] opacity-30 animate-cloud-drift-4 md:w-[700px]" style={{ top: '40%', left: '-10%', animationDelay: '-35s' }} />
           </div>
 
-          {/* Signature wordmark */}
+          {/* Script wordmark — the primary identity, large and central (both modes) */}
           <div className="relative z-10 w-full max-w-3xl px-6">
             <img src="/images/black_signature.gif" alt="Sarah Graves" className="w-full transition-[filter] duration-200 dark:invert" />
           </div>
-          {/* Welcome text */}
-          <div className="relative z-10 mt-8 w-full max-w-2xl px-6 text-center">
-            <p className="font-serif text-[22px] font-normal leading-snug md:text-[28px]" style={{ color: 'var(--ink)' }}>
-              Welcome to my corner of the internet!
-            </p>
-            <p className="mt-4 font-serif text-[22px] font-normal leading-snug md:text-[28px]" style={{ color: 'var(--ink)' }}>
-              I love helping people.{' '}
-              <Link href="mailto:sarahkgraves2@gmail.com" className="link-accent underline decoration-2 underline-offset-4">
-                Contact
-              </Link>{' '}
-              me with any questions or offers :)
-            </p>
+          {/* Single primary action */}
+          <div className="relative z-10 mt-10">
+            <Button href="#work">View selected work</Button>
           </div>
         </section>
       </div>
