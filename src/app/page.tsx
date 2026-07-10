@@ -1,6 +1,5 @@
 'use client'
 import { motion } from 'framer-motion'
-import Button from '@/components/Button'
 import Footer from '@/components/Footer'
 import Section from '@/components/Section'
 import ScrollReveal from '@/components/ScrollReveal'
@@ -115,12 +114,22 @@ export default function Home() {
           </div>
 
           {/* Script wordmark — the primary identity, large and central (both modes) */}
-          <div className="relative z-10 w-full max-w-3xl px-6">
+          <div className="relative z-10 w-full max-w-4xl px-6">
             <img src="/images/black_signature.gif" alt="Sarah Graves" className="w-full transition-[filter] duration-200 dark:invert" />
           </div>
-          {/* Single primary action */}
-          <div className="relative z-10 mt-10">
-            <Button href="#work">View selected work</Button>
+          {/* Single action — glassy pill, jumps straight to the contact panel */}
+          <div className="relative z-10 mt-12">
+            <button
+              type="button"
+              onClick={() => {
+                const el = document.getElementById('contact')
+                if (el) el.scrollIntoView({ behavior: 'instant' as ScrollBehavior })
+                history.replaceState(null, '', '#contact')
+              }}
+              className="hero-cta inline-flex items-center justify-center rounded-full px-12 py-5 text-xl font-medium"
+            >
+              Contact
+            </button>
           </div>
         </section>
       </div>

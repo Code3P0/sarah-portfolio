@@ -62,7 +62,9 @@ export function ThemeToggle({ overDark = false }: { overDark?: boolean }) {
       onClick={toggleTheme}
       className="flex h-11 w-11 items-center justify-center rounded-full shadow-lg shadow-black/5"
       style={{ color: iconColor, ...frostedCircle }}
-      whileHover={{ color: 'var(--accent-gold)' }}
+      whileHover={{ scale: 1.1, color: 'var(--accent-gold)' }}
+      whileTap={{ scale: 0.94 }}
+      transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
     >
       <motion.div

@@ -92,8 +92,7 @@ export default function Rail({
 
   const pad2 = (n: number) => String(n).padStart(2, '0')
   const arrowBtn =
-    'flex h-11 w-11 items-center justify-center rounded-full text-lg transition-[transform,opacity] duration-200 hover:-translate-y-0.5 disabled:pointer-events-none disabled:opacity-30'
-  const arrowStyle = { background: 'var(--canvas)', border: '1px solid var(--line)', color: 'var(--ink)' }
+    'rail-arrow flex h-11 w-11 items-center justify-center rounded-full text-lg disabled:pointer-events-none disabled:opacity-30'
 
   return (
     <div>
@@ -121,7 +120,6 @@ export default function Rail({
           onClick={() => goTo(active - 1)}
           disabled={active <= 0}
           className={arrowBtn}
-          style={arrowStyle}
         >
           ←
         </button>
@@ -134,7 +132,6 @@ export default function Rail({
           onClick={() => goTo(active + 1)}
           disabled={active >= items.length - 1}
           className={arrowBtn}
-          style={arrowStyle}
         >
           →
         </button>

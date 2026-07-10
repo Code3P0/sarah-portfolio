@@ -103,13 +103,13 @@ export default function Navigation() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="relative rounded-full px-5 py-2 text-sm font-medium"
+                className="nav-link relative rounded-full px-5 py-2 text-sm font-medium"
               >
                 <motion.span
                   className="relative z-10 block"
                   style={{ color: isActive ? inkColor : mutedColor, transition: 'color var(--dur-state) var(--ease)' }}
-                  whileHover={{ opacity: 0.75 }}
-                  transition={{ duration: 0.2 }}
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
                 >
                   {link.label}
                 </motion.span>

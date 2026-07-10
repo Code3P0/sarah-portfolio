@@ -23,16 +23,15 @@ const interests = [
 export default function AboutPage() {
   return (
     <main className="min-h-screen" style={{ background: 'var(--canvas)' }}>
-      {/* Video */}
+      {/* Title + video */}
       <Section className="!pb-0" containerClassName="pt-16">
+        <h1 className="type-h1 mb-8">About</h1>
         <Placeholder ratio="16:9" caption="FILM 001 · FALL 2026" />
       </Section>
 
       {/* About content */}
       <Section>
-        <h1 className="type-h1">About</h1>
-
-        <div className="mt-8 max-w-[680px] space-y-6">
+        <div className="max-w-[680px] space-y-6">
           <p className="type-body">
             I&apos;m a guard on the Texas Women&apos;s Basketball team and a finance major at McCombs. Off the court, I build things at the intersection of sports, media, and technology.
           </p>
