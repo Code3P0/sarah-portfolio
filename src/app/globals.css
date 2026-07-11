@@ -534,10 +534,29 @@ body {
   .work-card:focus-visible .img-frame::after {
     opacity: 0.03;
   }
+  /* Projects domain cards: the correlating photo sleeps under the tonal
+     field and breathes in at low opacity on hover/focus. Dark mode gets a
+     touch more so it survives the darker tint. */
+  .work-card .work-card-photo {
+    opacity: 0;
+    transition: opacity 250ms var(--ease);
+  }
+  .work-card:hover .work-card-photo,
+  .work-card:focus-visible .work-card-photo {
+    opacity: 0.14;
+  }
+  .dark .work-card:hover .work-card-photo,
+  .dark .work-card:focus-visible .work-card-photo {
+    opacity: 0.2;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .press-card,
   .work-card {
+    transition: none;
+  }
+  /* Photo still appears (it is an opacity state, not motion) but instantly */
+  .work-card .work-card-photo {
     transition: none;
   }
   .press-card:hover,

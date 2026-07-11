@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import Footer from '@/components/Footer'
 import Section from '@/components/Section'
@@ -19,6 +20,17 @@ const tints = [
   'color-mix(in srgb, var(--canvas-raised) 90%, #BF5700 10%)',
   'color-mix(in srgb, var(--canvas-raised) 91%, #8A6D3B 9%)',
   'color-mix(in srgb, var(--canvas-raised) 92%, #4A3F35 8%)',
+]
+
+// Hover reveal: a whisper-quiet photo per domain, faded in behind the type on
+// hover/focus (see .work-card-photo in globals.css). PLACEHOLDERS — swap each
+// src/objectPosition when the real per-domain images exist. Keyed by slug
+// order in domainList: strategy, data, media, writing.
+const hoverPhotos = [
+  { src: '/images/sarah-graves-speaking.jpg', objectPosition: '50% 28%' },
+  { src: '/images/sarah-graves-basketball-photo.jpg', objectPosition: '50% 30%' },
+  { src: '/images/sarah-graves-media-microphone-march-madness.jpg', objectPosition: '50% 35%' },
+  { src: '/images/sarah-graves-painting.jpg', objectPosition: '50% 35%' },
 ]
 
 export default function ProjectsPage() {
@@ -46,8 +58,21 @@ export default function ProjectsPage() {
                 className="work-card group relative flex min-h-[300px] flex-col overflow-hidden rounded-[24px] border p-6 md:min-h-[360px]"
                 style={{ background: tints[i], borderColor: 'var(--line)' }}
               >
+                {/* correlating photo, hidden at rest, revealed at low opacity
+                    on hover/focus under the typography */}
+                <div aria-hidden className="work-card-photo pointer-events-none absolute inset-0">
+                  <Image
+                    src={hoverPhotos[i].src}
+                    alt=""
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="object-cover"
+                    style={{ objectPosition: hoverPhotos[i].objectPosition }}
+                  />
+                </div>
+
                 {/* index + entry count */}
-                <div className="flex items-start justify-between">
+                <div className="relative flex items-start justify-between">
                   <span className="type-caption">0{i + 1}</span>
                   <span className="type-caption">
                     {d.entries.length} {d.entries.length === 1 ? 'study' : 'studies'}

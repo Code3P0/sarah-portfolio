@@ -187,6 +187,18 @@
   non-supporting browsers get the static hero — and prefers-reduced-motion
   (verified animation: none).
 
+## Projects: hover photo reveal on domain cards
+- Each of the 4 domain cards now fades in a correlating photo at very low
+  opacity behind the typography on hover/keyboard focus (250ms, opacity 0.14
+  light / 0.20 dark), replacing "random color only" as the hover surface; the
+  tonal tint stays as the resting state. Instant (no transition) under
+  reduced motion; never triggers on touch (inside the hover-capable gate).
+- PLACEHOLDER images, swap in `hoverPhotos` in src/app/projects/page.tsx:
+  strategy=speaking, data=basketball-photo, media=microphone-march-madness,
+  writing=painting.
+- Verified by screenshots at 1440 light+dark: rest state unchanged, hovered
+  cards keep fully legible type over the ghosted photo.
+
 ## Hero depth fix + amber removal
 - **Amber glow removed**: the warm radial (rgba(255,158,66,.38), screen blend)
   existed TWICE — once on the hero section, once replicated inside the front
