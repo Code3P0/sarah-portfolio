@@ -15,10 +15,10 @@ const columns: { label: string; links: { label: string; href: string; external?:
   {
     label: 'Work',
     links: [
-      { label: 'Path', href: '/projects#path' },
-      { label: "The Operator's Lens", href: '/projects#operators-lens' },
-      { label: 'BOSI Initiatives', href: '/projects#bosi' },
-      { label: 'NOAH Analytics', href: '/projects#noah' },
+      { label: 'Strategy', href: '/projects/strategy' },
+      { label: 'Data Analytics', href: '/projects/data' },
+      { label: 'Media', href: '/projects/media' },
+      { label: 'Writing', href: '/projects/writing' },
     ],
   },
   {

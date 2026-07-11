@@ -1,76 +1,68 @@
-# Real-asset population pass — CHANGES
+# CHANGES
 
-Populated the homepage + About page with the uploaded photography and video,
-on top of the committed design system. Verified in light AND dark at 1440 and
-390. Production build + typecheck clean; no hydration errors.
+## Projects rebuild — domain index + four detail routes
 
-## Done
-- **Recovered work:** origin/main only had the asset uploads on an old base; the
-  entire redesign lived in un-pushed local commits. A `git reset --hard` (as
-  requested) would have destroyed 6 commits, so I **merged** origin/main instead
-  (merge commit) — assets + redesign both preserved.
-- **ImageFrame** (`src/components/ImageFrame.tsx`): single grade wrapper for all
-  site photography via `next/Image`. Rest = grain (~9% via `::after`) +
-  saturate 88% / brightness 93%; hover **or** in-view (IntersectionObserver, so
-  touch feels alive) = grain→3%, full sat/bright, `scale(1.03)` inside an
-  `overflow-hidden` frame. 400ms `cubic-bezier(.22,1,.36,1)`; reduced-motion
-  drops the scale. Grade CSS lives in `@layer components` so `absolute`/
-  `lg:absolute` utilities can still override the frame's position.
-  Applied to: inline glyphs, all press cards, the contact/About headshot.
-- **Hero:** clean canvas (warm paper / flat dark ink), no clouds/gradient. Script
-  wordmark centered, full width (no clip), single glassy **Contact** button that
-  jumps to the contact panel. Also flattened the dark `body` (removed the
-  leftover indigo gradient) so the dark canvas is clean.
-- **Glyphs:** three real photos (bball / speaking / painting) inline at 8px
-  radius, graded like everything else.
-- **Press:** `press.ts` populated with the 6 entries in order (Forbes, NYT, AP,
-  ESPN, UT, Statesman); static grid (4-up / 2-up / 1-up), photo fills each card
-  via ImageFrame with a scrim, whole card links out in a new tab. Section now
-  renders (was hidden while empty).
-- **Video:** `VideoSlot` now takes a `.webm` source; wired the real portrait
-  video (mp4 + webm, poster) into the homepage feature story **and** the About
-  page (replaced the placeholder). Muted, loop, playsInline, autoplays only in
-  view (IO), pauses offscreen, visible pause control, poster under reduced-motion.
-  Verified autoplaying (muted) in view; `muted` set via ref to avoid the SSR
-  hydration mismatch.
-- **Favicon + OG:** `src/app/icon.jpg` (512² app/icon convention) + metadata
-  `og:image`/`twitter:image` = `sarah-graves-face-main.jpg` (already exactly
-  1200×630, so no crop needed), `og:title` "Sarah Graves", `og:description`
-  "Guard at Texas. Building in sports, media, and AI."
-- **Alt text:** descriptive, name + context on every image (glyphs, press,
-  headshot, video).
+- **Projects index** (`/projects`): replaced Path/Operator's Lens/BOSI/NOAH with
+  four domain cards in a 2×2 grid — Strategy, Data Analytics, Media, Writing —
+  each a full link to its route, with the designed placeholder media (clean
+  tonal field + uppercase domain tag, no photo) and the shared work-card
+  hover/brighten recipe.
+- **Four detail routes** `/projects/{strategy,data,media,writing}`: all render
+  the shared `ProjectDetail` component, so they stay structurally identical and
+  are populated by editing data. Each has a header (large serif title +
+  descriptor + `← Projects` back link) and a vertical, image-alternating stack
+  of project entries.
+- **Data** `src/data/projects.ts`: object keyed by domain; each entry is
+  `{ role, year, context, title, summary, body, image?, url? }`. Ships with two
+  clearly-labelled placeholder entries per domain ("Project one/two", "Summary
+  in progress.", "Details in progress.") so pages look intentional and full.
+  Missing `image` → designed placeholder ("CASE STUDY · IN PROGRESS"); missing
+  `url` → the "View →" link is hidden. No "coming soon" strings anywhere.
+- **Dead references removed**: the homepage Selected Work (WorkRail) and the
+  Footer "Work" column now point at the four domain routes. WorkRail reads from
+  the same `domains` data. No links to the old project names/anchors remain.
+- **Page transitions** now cover nested routes: `/projects → /projects/strategy`
+  reads as forward, the reverse (and any ancestor navigation) as back; nav stays
+  fixed; reduced-motion is an opacity crossfade.
 
-## Notes / things to be aware of
-1. **`white_signature.gif` is a dark asset** (same 38 MB as `black_signature.gif`
-   — looks like a duplicate). Rendered as dark ink on dark. To guarantee a white
-   wordmark on dark I used `black_signature.gif` + `dark:invert` (the proven
-   approach) — visually matches the intent. If you have a true white-ink asset,
-   drop it in and I'll switch back to the two-file approach.
-2. **Signature GIFs are ~38 MB each** — very heavy for a hero LCP. Strongly
-   recommend exporting a lighter asset (optimized GIF/APNG, a short muted video,
-   or ideally an SVG/PNG of the signature). Not changed this pass.
-3. **Work cards have no photos** — the prompt assigned photos only to glyphs and
-   press, so the four work cards (+ "More in progress") still use the design-
-   system Placeholder. Unused uploaded photos are available to fill them if you
-   want: `sarah-graves-basketball-photo.jpg`, `-desert-set.jpg`, `-hero.jpg`,
-   `-track.jpg`, `-face-main.jpg`. Tell me the mapping and I'll wire them.
-4. **`metadataBase`** defaults to a placeholder `https://sarahgraves.com`. Set
-   `NEXT_PUBLIC_SITE_URL` (or edit the default in `layout.tsx`) to the real
-   domain so OG/Twitter image URLs are correct in production.
-5. The homepage feature story and the About page currently show the **same**
-   portrait video. If you want different clips, give me a second file.
-6. ESLint still reports the pre-existing `react-hooks/set-state-in-effect`
-   warnings (client-init/observer effects) and `no-img-element` on the signature
-   GIF (kept as `<img>` deliberately — next/Image on a 38 MB GIF would be worse).
-   Build is unaffected.
+### Fixed a real bug while here
+The route transition read `prefers-reduced-motion` via `typeof window` **during
+render**, which caused an SSR/client **hydration mismatch** on every page under
+reduced motion. Reworked `template.tsx` to apply the directional x-offset
+client-side via animation controls (SSR always renders `x:0`) and wrapped it in
+`MotionConfig reducedMotion="user"`. Verified hydration is now clean on `/`,
+`/projects`, `/projects/strategy`, `/about` in both normal and reduced motion.
+
+## (Same session) Fix pass — hero, press, About, hover
+
+- **Hero**: layered — hero photo (`object-position` biased right so Sarah stays
+  framed), theme scrim, slow drifting clouds (46–60s, freeze under reduced
+  motion), white inverted wordmark, Contact button. Removed the Feature Story,
+  Currently, and Finale sections from the homepage.
+- **Press**: horizontal scroll strip (snap, drag, wheel, keyboard, right-edge
+  fade + next-card sliver; no arrows/pagination/loop). New card: outlet eyebrow
+  top, bold serif headline on a bottom scrim, whole card is the link
+  (`aria-label`), no "Read →". 8 entries; ESPN label corrected to the Schaefer
+  quote; AP image reassigned; **per-entry `objectPosition`** — verified in
+  rendered screenshots that **Sarah is visible in all 8 crops** (notably
+  `march-picture` at `85%`, which was previously cropping her out).
+- **Card hover/focus**: unified recipe on press + work cards — scale 1.04, deeper
+  shadow, photo brightens above neighbours; `@media (hover: hover)` so touch
+  doesn't stick; in-view brightening handles touch. ImageFrame gained an
+  `objectPosition` prop.
+- **About**: two-column — constrained portrait video left, bio right; resume is
+  now a secondary pill button; mobile stacks video first.
 
 ## Verified
-- Hero: signature correct per theme (black light / white dark), never clips,
-  clean background both modes; single Contact button.
-- All 6 press cards render photos in correct order (Forbes → NYT → AP → ESPN →
-  UT → Statesman).
-- Glyphs show real photos; grade + hover work on mouse, and in-view brightening
-  works (for touch).
-- About video autoplays in view (muted), pauses offscreen, has a pause control.
-- No "coming soon" / "Video coming soon" strings anywhere.
-- `next build` + `tsc --noEmit` clean; no console/hydration errors.
+- Projects index (2×2) + all four detail routes render; light + dark, 1440 + 390.
+- Each detail route shows 2 designed placeholder entries, alternating image
+  side, no "coming soon", empty slots look intentional.
+- All 8 press cards: correct outlet order (Forbes, NYT, AP, ESPN, UT, Statesman,
+  X, X), correct labels, Sarah visible in every crop.
+- Hydration clean (normal + reduced motion); `next build` + `tsc` clean.
+
+## Notes / open items (unchanged from prior passes)
+- `white_signature.gif` is a duplicate dark asset → wordmark uses `black_signature.gif` + `invert`.
+- Signature GIFs are ~38 MB each — recommend a lighter asset for hero LCP.
+- `metadataBase` defaults to a placeholder domain — set `NEXT_PUBLIC_SITE_URL`.
+- Orphaned components now unused: `FeatureStory`, `Finale`, `Rail` (kept, not imported).

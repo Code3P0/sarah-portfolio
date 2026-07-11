@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { MotionConfig, motion, useAnimationControls } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 import type { ReactNode } from 'react'
@@ -12,39 +12,37 @@ let lastPath: string | null = null
 /**
  * Restrained directional page transition. The nav lives in the persistent
  * layout (outside this template) so it never moves; only the page content
- * animates — incoming content translateX 48→0 + fade in (reversed on back
- * navigation). First load just fades. Reduced motion → fast crossfade only.
- * Scroll resets to top on entry.
+ * animates — incoming content translateX 48→0 + fade in (reversed on back /
+ * ancestor navigation). First load just fades.
  *
- * Note: App Router unmounts the outgoing route before an exit animation can
- * play, so only the incoming half is animated (the enter covers the swap).
+ * The x-offset is applied entirely on the client via animation controls (never
+ * in the SSR `initial`) so the server-rendered markup is always x:0 — this
+ * avoids a hydration mismatch, and MotionConfig reducedMotion="user" turns the
+ * slide into an opacity-only crossfade for reduced-motion users.
  */
 export default function Template({ children }: { children: ReactNode }) {
   const pathname = usePathname()
-
-  const isFirst = lastPath === null
-  const prevIdx = lastPath ? order.indexOf(lastPath) : -1
-  const curIdx = order.indexOf(pathname)
-  const back = prevIdx > -1 && curIdx > -1 && curIdx < prevIdx
-  lastPath = pathname
+  const controls = useAnimationControls()
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [pathname])
+    const isFirst = lastPath === null
+    const prevIdx = lastPath ? order.indexOf(lastPath) : -1
+    const curIdx = order.indexOf(pathname)
+    const isAncestor = lastPath !== null && pathname !== lastPath && lastPath.startsWith(pathname + '/')
+    const back = isAncestor || (prevIdx > -1 && curIdx > -1 && curIdx < prevIdx)
+    const x = isFirst ? 0 : back ? -48 : 48
+    lastPath = pathname
 
-  const reduce =
-    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const x = reduce || isFirst ? 0 : back ? -48 : 48
+    window.scrollTo(0, 0)
+    controls.set({ opacity: 0, x })
+    controls.start({ opacity: 1, x: 0, transition: { duration: 0.46, ease: [0.22, 1, 0.36, 1] } })
+  }, [pathname, controls])
 
   return (
-    <motion.div
-      className="page-anim"
-      style={{ overflowX: 'clip' }}
-      initial={{ opacity: 0, x }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: reduce ? 0.2 : 0.46, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {children}
-    </motion.div>
+    <MotionConfig reducedMotion="user">
+      <motion.div className="page-anim" style={{ overflowX: 'clip' }} initial={{ opacity: 0 }} animate={controls}>
+        {children}
+      </motion.div>
+    </MotionConfig>
   )
 }
