@@ -47,25 +47,17 @@ export default function Home() {
           className="hero-timeline relative flex min-h-[86vh] flex-col justify-center overflow-hidden rounded-[24px]"
           style={{ background: 'var(--canvas-raised)' }}
         >
-          {/* PLANE 1: back plate (deepest, slowest). Keeps drift + grade. */}
+          {/* PLANE 1: back plate ONLY (seats/room, Sarah edited out). Deepest
+              and slowest; it must visibly fall behind her. Because it lags
+              (moves down-relative) less than the page scrolls, the gap it
+              opens stays above the viewport, and the area behind Sarah is
+              real plate content, so her fast plane never reveals raw page. */}
           <div className="hero-par-back absolute inset-0">
             <div className="hero-drift absolute inset-0 dark:brightness-[.85] dark:saturate-[1.06]">
               <Image
                 src="/images/back-hero.png"
                 alt=""
                 aria-hidden
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover"
-                style={{ objectPosition: '74% 32%' }}
-              />
-              {/* Front plate also rides the back plane at rest so the scene is
-                  complete; the separate front PLANE above re-draws Sarah so she
-                  can lead. Identical position = seamless rest state. */}
-              <Image
-                src="/images/front-hero-sarah-graves.png"
-                alt="Sarah Graves, Texas Women's Basketball guard, standing courtside"
                 fill
                 priority
                 sizes="100vw"
@@ -83,15 +75,6 @@ export default function Home() {
             style={{
               background:
                 'linear-gradient(to right, rgba(16,13,10,0.78) 0%, rgba(16,13,10,0.42) 30%, transparent 56%), linear-gradient(to top, rgba(14,12,10,0.6) 0%, transparent 26%)',
-            }}
-          />
-          {/* Amber light along Sarah's edge. Screen blend: adds light. */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[600ms] dark:opacity-100"
-            style={{
-              background: 'radial-gradient(ellipse 46% 72% at 68% 48%, rgba(255,158,66,0.38), transparent 64%)',
-              mixBlendMode: 'screen',
             }}
           />
           {/* Localized day scrim: quiet canvas lift on the left third only. */}
@@ -140,23 +123,27 @@ export default function Home() {
             </button>
           </div>
 
-          {/* PLANE 3: front cutout (closest, leads the page). Feather-masked
-              around Sarah so the rough matte's opaque rectangle never occludes
-              the wordmark with invisible wall; drift-synced with the back
-              plane; night grades replicated inside so the plane matches the
-              scene at rest. */}
+          {/* PLANE 3: front cutout, the ONLY Sarah (closest, leads the page so
+              she visibly pulls up and away from the lagging seats). Feathered
+              mask: horizontal band hugs her (solid before her left edge so she
+              is never translucent) and a soft bottom fade hides the rough
+              matte rectangle's bottom seam while she rises; drift-synced with
+              the back plane; night grade replicated inside. */}
           <div
-            aria-hidden
             className="hero-par-front pointer-events-none absolute inset-0 z-20"
             style={{
-              maskImage: 'linear-gradient(to right, transparent 40%, #000 47%, #000 82%, transparent 92%)',
-              WebkitMaskImage: 'linear-gradient(to right, transparent 40%, #000 47%, #000 82%, transparent 92%)',
+              maskImage:
+                'linear-gradient(to right, transparent 37%, #000 43%, #000 80%, transparent 90%), linear-gradient(to bottom, #000 0%, #000 92%, transparent 100%)',
+              WebkitMaskImage:
+                'linear-gradient(to right, transparent 37%, #000 43%, #000 80%, transparent 90%), linear-gradient(to bottom, #000 0%, #000 92%, transparent 100%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in',
             }}
           >
             <div className="hero-drift absolute inset-0">
               <Image
                 src="/images/front-hero-sarah-graves.png"
-                alt=""
+                alt="Sarah Graves, Texas Women's Basketball guard, standing courtside"
                 fill
                 priority
                 sizes="100vw"
@@ -169,14 +156,6 @@ export default function Home() {
                 style={{
                   background:
                     'linear-gradient(to right, rgba(16,13,10,0.78) 0%, rgba(16,13,10,0.42) 30%, transparent 56%), linear-gradient(to top, rgba(14,12,10,0.6) 0%, transparent 26%)',
-                }}
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0 opacity-0 transition-opacity duration-[600ms] dark:opacity-100"
-                style={{
-                  background: 'radial-gradient(ellipse 46% 72% at 68% 48%, rgba(255,158,66,0.38), transparent 64%)',
-                  mixBlendMode: 'screen',
                 }}
               />
             </div>

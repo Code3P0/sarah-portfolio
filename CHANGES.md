@@ -181,14 +181,34 @@
   and the real profile URLs already used in the footer. Verified in rendered
   head; no noindex anywhere. metadataBase still falls back to the placeholder
   domain until NEXT_PUBLIC_SITE_URL is set.
-- **Bold scroll parallax** (final deltas): named view-timeline on the hero,
-  exit range; back plate lags 46vh (~54% travel), wordmark lags 26vh (~70%,
-  translate-only so it never distorts), front cutout leads -14vh (~116%) and
-  scales to 1.05. Mobile: 22/12/-6vh. Front plane is feather-masked around
-  Sarah (40>47/82>92%) and drift-synced so the rough matte never pops over
-  the wordmark; night grades replicated inside the plane. Gated behind
-  @supports (animation-timeline) — non-supporting browsers get the static
-  hero — and prefers-reduced-motion (verified animation: none). Verified by
-  scrolling: 4-position sequence at 1440 dark + light/390 frames; separation
-  obvious (Sarah exits first, wordmark second, seats linger), wordmark crisp,
-  no seams, no horizontal overflow, nav + Contact static.
+- **Bold scroll parallax** (final, after depth fix below): named view-timeline
+  on the hero, exit range; translate-only wordmark so it never distorts; front
+  cutout also scales to 1.05. Gated behind @supports (animation-timeline) —
+  non-supporting browsers get the static hero — and prefers-reduced-motion
+  (verified animation: none).
+
+## Hero depth fix + amber removal
+- **Amber glow removed**: the warm radial (rgba(255,158,66,.38), screen blend)
+  existed TWICE — once on the hero section, once replicated inside the front
+  parallax plane — which doubled into the "yellow mask" over the dark-mode
+  photo. Both deleted; the night grade is now just the espresso scrims +
+  brightness/saturate pull. Verified in all dark frames: no yellow cast.
+- **True layer separation**: previously the front (full photo with Sarah) rode
+  the back plane too, so Sarah was baked into the slow plate and the planes
+  looked locked. Now PLANE 1 renders ONLY back-hero.png (Sarah edited out) and
+  PLANE 3 is the ONLY Sarah (front cutout), feather-masked
+  (37>43% left, 80>90% right, 92>100% bottom fade, maskComposite: intersect)
+  so the rough matte rectangle never shows and her bottom edge dissolves as
+  she rises.
+- **Final per-layer speeds** (hero ~86vh travel over the exit range):
+  | Plane | Delta (desktop) | Effective speed | Mobile delta |
+  |---|---|---|---|
+  | Back plate (seats) | lags 52vh | ~40% of scroll | 26vh |
+  | Wordmark | lags 26vh | ~70% of scroll | 12vh |
+  | Front cutout (Sarah) | leads -16vh + scale 1.05 | ~118% of scroll | -8vh |
+- Verified BY LOOKING at scroll sequences: 1440 dark 4 positions
+  (top/quarter/half/exit), 1440 light + 390 dark 3 positions each. Between
+  top and quarter frames Sarah's crossed arms travel ~420px while the seat
+  backs behind her travel ~200px — she visibly rises away from the lagging
+  seats, exits first, wordmark second, seats linger. No seams, no raw page
+  behind her, overflowX=0 at both widths, nav + Contact static.
