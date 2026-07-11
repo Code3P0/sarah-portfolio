@@ -77,3 +77,24 @@
 2. A **lighter signature asset** (the GIFs are ~38 MB each — the main LCP cost).
 3. Confirm the *basketball* link destination (currently the Texas WBB post).
 4. Real `NEXT_PUBLIC_SITE_URL` for OG metadata.
+
+## VerbIntro prototype + Newsletter
+
+- **VerbIntro** (`src/components/VerbIntro.tsx`, data `src/data/verbs.ts`): "I like
+  to [make/ask/study/connect/build/edit]." — word cycles every 3s (rise/fade,
+  600ms), one 4:3 artifact crossfades in step. Inline-grid word slot = zero
+  horizontal shift (measured). Pauses on hover/focus/hidden tab/manual select
+  (12s resume); reduced motion = manual only (verified no cycling). aria-hidden
+  animated sentence + static sr-only sentence; real buttons with aria-pressed.
+  Only prev/current/next artifacts mounted. Assets: make=painting, ask=mic
+  interview, connect=fans, edit=film-set still; **study + build = labelled
+  placeholders (assets TBD)**. Toggle `useChangingVerbIntro` in `page.tsx`
+  restores the previous EditorialStatement in one line.
+- **Newsletter** (`src/components/NewsletterSection.tsx`, copy in
+  `src/data/newsletter.ts` with TODO on final wording): pill email form posting
+  to `NEXT_PUBLIC_NEWSLETTER_ENDPOINT` via fetch; idle/submitting/success/error
+  states (200ms fades), honeypot, plausibility validation gating submit,
+  aria-live announcements, sr-only label. **Renders nothing when the env var is
+  unset** (verified) — set it in production to enable; a gitignored `.env.local`
+  placeholder exists locally for development only. Success + error states both
+  exercised (error via CORS-blocked mock; form stayed usable).

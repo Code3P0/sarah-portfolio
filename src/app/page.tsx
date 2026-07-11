@@ -4,8 +4,13 @@ import Footer from '@/components/Footer'
 import Section from '@/components/Section'
 import ContactBand from '@/components/ContactBand'
 import EditorialStatement from '@/components/EditorialStatement'
+import VerbIntro from '@/components/VerbIntro'
+import NewsletterSection from '@/components/NewsletterSection'
 import WorkRail from '@/components/WorkRail'
 import PressSection from '@/components/PressSection'
+
+// Prototype toggle — flip to false to restore the previous identity statement.
+const useChangingVerbIntro = true
 
 export default function Home() {
   return (
@@ -86,8 +91,9 @@ export default function Home() {
         </section>
       </div>
 
-      {/* Editorial statement → Selected Work → Press → Contact → Footer */}
-      <EditorialStatement />
+      {/* Intro (prototype toggle) → Newsletter → Selected Work → Press → Contact → Footer */}
+      {useChangingVerbIntro ? <VerbIntro /> : <EditorialStatement />}
+      <NewsletterSection />
       <WorkRail />
       <PressSection />
 
