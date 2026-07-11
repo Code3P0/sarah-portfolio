@@ -15,24 +15,33 @@ const dmSans = DM_Sans({
   weight: ["400", "500"],
 });
 
+const siteDescription =
+  "Sarah Graves is a guard on the Texas women's basketball team and an MBA student at McCombs, building at the intersection of sports, media, and technology.";
+
 export const metadata: Metadata = {
   // Set NEXT_PUBLIC_SITE_URL to the real domain in production so OG/Twitter
-  // image URLs resolve absolutely; the fallback is a placeholder.
+  // image URLs and the canonical resolve absolutely; the fallback is a placeholder.
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://sarahgraves.com"),
-  title: "Sarah Graves",
-  description: "Guard at Texas. Building in sports, media, and AI.",
+  title: {
+    default: "Sarah Graves",
+    template: "%s - Sarah Graves",
+  },
+  description: siteDescription,
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
+    url: "/",
     title: "Sarah Graves",
-    description: "Guard at Texas. Building in sports, media, and AI.",
+    description: siteDescription,
     images: [
+      // sarah-graves-face-main.jpg is natively 1200x630 (verified)
       { url: "/images/sarah-graves-face-main.jpg", width: 1200, height: 630, alt: "Sarah Graves" },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Sarah Graves",
-    description: "Guard at Texas. Building in sports, media, and AI.",
+    description: siteDescription,
     images: ["/images/sarah-graves-face-main.jpg"],
   },
 };

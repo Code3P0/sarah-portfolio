@@ -1,9 +1,16 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Footer from '@/components/Footer'
 import Section from '@/components/Section'
 import ScrollReveal from '@/components/ScrollReveal'
 import FilmBanner from '@/components/FilmBanner'
 import { domainList } from '@/data/projects'
+
+export const metadata: Metadata = {
+  title: 'Projects',
+  description: 'Selected work across strategy, data, media, and writing.',
+  alternates: { canonical: '/projects' },
+}
 
 // Distinct subtle tonal field per card, derived from the warm palette; both
 // modes inherit via --canvas-raised.

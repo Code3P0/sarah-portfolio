@@ -159,3 +159,36 @@
     forehead) and was replaced after visual review
 - Known spec'd behavior: with the slot sized to "connect", shorter words show
   a gap before the stationary period.
+
+## Hero wordmark revert + hidden identity + SEO + bold parallax
+- **Wordmark revert**: plain animated signature GIF (draw-on), no mask/cutout/
+  compositing on the mark itself; capped at 46% hero width (640px, well under
+  the GIF's 2914px native), left over the seats, Contact aligned below. Mobile
+  shifts the group up into the open wall area so it stays clear of Sarah.
+  NOTE: white_signature.gif is byte-identical (MD5) to black_signature.gif, so
+  dark mode inverts the black GIF; drop in a true white file to remove the invert.
+- **Identity section hidden** (not deleted): `showIdentitySection = false` in
+  page.tsx; VerbIntro component + verbs data intact for later. Homepage flows
+  Hero -> Newsletter (env-gated) -> Selected Work with normal rhythm; verified
+  no empty band.
+- **SEO**: Metadata API only. Root: title "Sarah Graves" + template
+  "%s - Sarah Graves" (hyphen), 150-char factual description, canonical,
+  OG (type/url/title/description/image = sarah-graves-face-main.jpg, natively
+  1200x630) and twitter summary_large_image. Per-route metadata: Projects,
+  About (via new about/layout.tsx since the page is a client component), and
+  the four domain routes (short titles + their real descriptors). JSON-LD
+  Person on the homepage with only verifiable fields (guard/Texas, McCombs)
+  and the real profile URLs already used in the footer. Verified in rendered
+  head; no noindex anywhere. metadataBase still falls back to the placeholder
+  domain until NEXT_PUBLIC_SITE_URL is set.
+- **Bold scroll parallax** (final deltas): named view-timeline on the hero,
+  exit range; back plate lags 46vh (~54% travel), wordmark lags 26vh (~70%,
+  translate-only so it never distorts), front cutout leads -14vh (~116%) and
+  scales to 1.05. Mobile: 22/12/-6vh. Front plane is feather-masked around
+  Sarah (40>47/82>92%) and drift-synced so the rough matte never pops over
+  the wordmark; night grades replicated inside the plane. Gated behind
+  @supports (animation-timeline) — non-supporting browsers get the static
+  hero — and prefers-reduced-motion (verified animation: none). Verified by
+  scrolling: 4-position sequence at 1440 dark + light/390 frames; separation
+  obvious (Sarah exits first, wordmark second, seats linger), wordmark crisp,
+  no seams, no horizontal overflow, nav + Contact static.

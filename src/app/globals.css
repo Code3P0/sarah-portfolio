@@ -590,6 +590,58 @@ body {
   }
 }
 
+/* ===== Hero parallax: bold scroll-driven depth planes ======================
+   Driven by a named view-timeline on the hero section while it exits the
+   scrollport. Deltas are deliberately large so the separation is obvious:
+   back plate lags hard, wordmark lags less (recedes behind Sarah), the front
+   cutout leads the page and swells slightly. Transforms only, composited.
+   Gated: browsers without animation-timeline get the static composed hero;
+   reduced-motion disables all of it. Mobile deltas are reduced. */
+:root {
+  --par-back: 46vh;   /* back plate travels ~54% of scroll (lags 46vh) */
+  --par-word: 26vh;   /* wordmark travels ~70% of scroll */
+  --par-front: -14vh; /* front cutout travels ~116% of scroll (leads) */
+}
+@media (max-width: 768px) {
+  :root {
+    --par-back: 22vh;
+    --par-word: 12vh;
+    --par-front: -6vh;
+  }
+}
+.hero-timeline {
+  view-timeline-name: --hero-exit;
+  view-timeline-axis: block;
+}
+@keyframes heroParBack {
+  to { transform: translateY(var(--par-back)); }
+}
+@keyframes heroParWord {
+  to { transform: translateY(var(--par-word)); }
+}
+@keyframes heroParFront {
+  to { transform: translateY(var(--par-front)) scale(1.05); }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-par-back,
+    .hero-par-word,
+    .hero-par-front {
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --hero-exit;
+      animation-range: exit 0% exit 100%;
+      will-change: transform;
+    }
+    .hero-par-back { animation-name: heroParBack; }
+    .hero-par-word { animation-name: heroParWord; }
+    .hero-par-front {
+      animation-name: heroParFront;
+      transform-origin: 74% 60%;
+    }
+  }
+}
+
 /* ===== Identity glyphs — inline photo grows dramatically on hover/focus ==== */
 .glyph-slot {
   display: inline-block;
