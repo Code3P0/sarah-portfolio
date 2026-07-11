@@ -131,3 +131,31 @@
 5. Real `NEXT_PUBLIC_SITE_URL` for OG metadata.
 6. Basketball link destination in the retired EditorialStatement (only rendered
    if the VerbIntro toggle is turned off).
+
+## Identity section: click-driven word switcher
+- No auto-rotate: the word changes only on user input. Default "make".
+- Sentence: fixed-width slot sized to the longest word (invisible sizer,
+  text-left) — measured zero layout shift across all five switches (sentence
+  box and document height identical). Word swap 280ms up/down fade-slide;
+  outgoing exits upward, incoming rises from below; instant under reduced
+  motion. The gold word itself is a button that advances to the next word
+  (aria-label, hover state); a polite sr-only live region announces changes.
+- Image: single wide low strip (21:9, clamped 180/300px, 24px radius,
+  ImageFrame grade) inside the content container; all five frames stay
+  mounted in one fixed-aspect box (instant, opacity-only 400ms crossfades,
+  zero CLS; frames load once the section is near the viewport).
+- Word index: MAKE · BUILD · STUDY · CONNECT · WRITE as real buttons in the
+  eyebrow style; active gold at full opacity, inactive ink at 40% (70% on
+  hover); slim gold underline slides beneath the active word (fixed a bug
+  where the underline sat on the wrong row when the index wraps on mobile);
+  aria-pressed, 44px targets, arrow-key navigation, visible focus.
+- Word-to-image map (wide crops visually verified at 1440 and 390):
+  make → sarah-graves-painting.jpg (50% 30%)
+  build → sarah-graves-hero.jpg (74% 30%) STAND-IN until a product photo exists
+  study → sarah-graves-track.jpg (50% 40%) team training; closest true image
+  connect → sarah-graves-fans.jpg (50% 32%)
+  write → sarah-graves-media-microphone-march-madness.jpg (50% 38%) STAND-IN;
+    the speaking.jpg source was too low-res for the wide crop (blurry, cropped
+    forehead) and was replaced after visual review
+- Known spec'd behavior: with the slot sized to "connect", shorter words show
+  a gap before the stationary period.
