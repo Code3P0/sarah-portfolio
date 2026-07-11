@@ -71,3 +71,13 @@ export const domains: Record<DomainSlug, Domain> = {
 }
 
 export const domainList: Domain[] = [domains.strategy, domains.data, domains.media, domains.writing]
+
+// One photo per domain, used by BOTH the homepage Selected Work cards and the
+// Projects page hover reveal. PLACEHOLDERS — swap src/objectPosition here when
+// the real per-domain images exist and both pages update together.
+export const domainPhotos: Record<DomainSlug, { src: string; objectPosition: string }> = {
+  strategy: { src: '/images/sarah-graves-speaking.jpg', objectPosition: '50% 28%' },
+  data: { src: '/images/sarah-graves-basketball-photo.jpg', objectPosition: '50% 30%' },
+  media: { src: '/images/sarah-graves-media-microphone-march-madness.jpg', objectPosition: '50% 35%' },
+  writing: { src: '/images/sarah-graves-painting.jpg', objectPosition: '50% 35%' },
+}

@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 import Section from '@/components/Section'
 import ScrollReveal from '@/components/ScrollReveal'
 import FilmBanner from '@/components/FilmBanner'
-import { domainList } from '@/data/projects'
+import { domainList, domainPhotos } from '@/data/projects'
 
 export const metadata: Metadata = {
   title: 'Projects',
@@ -22,17 +22,6 @@ const tints = [
   'color-mix(in srgb, var(--canvas-raised) 92%, #4A3F35 8%)',
 ]
 
-// Hover reveal: a whisper-quiet photo per domain, faded in behind the type on
-// hover/focus (see .work-card-photo in globals.css). PLACEHOLDERS — swap each
-// src/objectPosition when the real per-domain images exist. Keyed by slug
-// order in domainList: strategy, data, media, writing.
-const hoverPhotos = [
-  { src: '/images/sarah-graves-speaking.jpg', objectPosition: '50% 28%' },
-  { src: '/images/sarah-graves-basketball-photo.jpg', objectPosition: '50% 30%' },
-  { src: '/images/sarah-graves-media-microphone-march-madness.jpg', objectPosition: '50% 35%' },
-  { src: '/images/sarah-graves-painting.jpg', objectPosition: '50% 35%' },
-]
-
 export default function ProjectsPage() {
   return (
     <main className="min-h-screen" style={{ background: 'var(--canvas)' }}>
@@ -40,15 +29,17 @@ export default function ProjectsPage() {
         <h1 className="type-h1">Projects</h1>
       </Section>
 
-      {/* Thin cinematic film strip; poster + caption until a URL exists */}
-      <Section className="!pb-0" containerClassName="pt-2">
+      {/* Cinematic film strip; poster + caption until a URL exists. Pulled
+          tight to the header and the card grid (tighter than Section rhythm)
+          so the page reads header / film / work as one composition. */}
+      <Section className="!py-0" containerClassName="pt-10 md:pt-12">
         <ScrollReveal media>
           <FilmBanner />
         </ScrollReveal>
       </Section>
 
       {/* Four domains as designed typographic covers */}
-      <Section>
+      <Section className="!pt-0" containerClassName="pt-10 md:pt-12">
         <ScrollReveal>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {domainList.map((d, i) => (
@@ -58,16 +49,16 @@ export default function ProjectsPage() {
                 className="work-card group relative flex min-h-[300px] flex-col overflow-hidden rounded-[24px] border p-6 md:min-h-[360px]"
                 style={{ background: tints[i], borderColor: 'var(--line)' }}
               >
-                {/* correlating photo, hidden at rest, revealed at low opacity
-                    on hover/focus under the typography */}
+                {/* correlating photo (shared domainPhotos map), hidden at rest,
+                    revealed at low opacity on hover/focus under the typography */}
                 <div aria-hidden className="work-card-photo pointer-events-none absolute inset-0">
                   <Image
-                    src={hoverPhotos[i].src}
+                    src={domainPhotos[d.slug].src}
                     alt=""
                     fill
                     sizes="(min-width: 768px) 50vw, 100vw"
                     className="object-cover"
-                    style={{ objectPosition: hoverPhotos[i].objectPosition }}
+                    style={{ objectPosition: domainPhotos[d.slug].objectPosition }}
                   />
                 </div>
 

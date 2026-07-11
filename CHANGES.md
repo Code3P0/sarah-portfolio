@@ -187,6 +187,17 @@
   non-supporting browsers get the static hero — and prefers-reduced-motion
   (verified animation: none).
 
+## Homepage cards filled + taller film banner
+- Selected Work cards on the homepage now show real photos instead of the
+  designed placeholders, from a new shared `domainPhotos` map in
+  src/data/projects.ts (also feeds the Projects hover reveal, so swapping a
+  photo there updates both pages). Strategy=speaking, data=basketball-photo,
+  media=microphone-march-madness, writing=painting — still PLACEHOLDERS to
+  swap. "More in progress" keeps its placeholder (no destination).
+- Film banner: aspect 21:9 → 2:1 with height caps raised 160/280 →
+  220/400px, and the Section gaps above/below pulled from the 120px rhythm to
+  ~40-48px so header / film / cards read as one composition.
+
 ## Projects: hover photo reveal on domain cards
 - Each of the 4 domain cards now fades in a correlating photo at very low
   opacity behind the typography on hover/keyboard focus (250ms, opacity 0.14

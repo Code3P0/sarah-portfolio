@@ -33,7 +33,7 @@ export default function FilmBanner() {
   }
 
   return (
-    <div className="relative max-h-[160px] w-full overflow-hidden rounded-[24px] md:max-h-[280px]" style={{ aspectRatio: '21 / 9' }}>
+    <div className="relative max-h-[220px] w-full overflow-hidden rounded-[24px] md:max-h-[400px]" style={{ aspectRatio: '2 / 1' }}>
       {playing && videoUrl ? (
         <video ref={videoRef} src={videoUrl} className="absolute inset-0 h-full w-full object-cover" controls playsInline loop />
       ) : (

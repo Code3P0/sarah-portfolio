@@ -2,7 +2,8 @@ import Link from 'next/link'
 import Section from '@/components/Section'
 import ScrollReveal from '@/components/ScrollReveal'
 import Placeholder from '@/components/Placeholder'
-import { domainList, type Domain } from '@/data/projects'
+import ImageFrame from '@/components/ImageFrame'
+import { domainList, domainPhotos, type Domain } from '@/data/projects'
 
 type Work = Domain
 const work: Work[] = domainList
@@ -23,7 +24,15 @@ function FeaturedCard({ item }: { item: Work }) {
       style={cardStyle}
     >
       <div className="md:w-[60%]">
-        <Placeholder ratio="16:9" caption={item.tag} mark={false} alt="" className="!rounded-[12px]" />
+        <div className="relative aspect-[16/9] overflow-hidden rounded-[12px]">
+          <ImageFrame
+            src={domainPhotos[item.slug].src}
+            alt=""
+            className="absolute inset-0 h-full w-full"
+            objectPosition={domainPhotos[item.slug].objectPosition}
+            sizes="(max-width: 768px) 92vw, 660px"
+          />
+        </div>
       </div>
       <div className="flex flex-col justify-center md:w-[40%] md:pr-4">
         <h3 className="type-h2">{item.title}</h3>
@@ -41,7 +50,15 @@ function FeaturedCard({ item }: { item: Work }) {
 function WorkCard({ item }: { item: Work }) {
   return (
     <Link href={`/projects/${item.slug}`} className="work-card group flex flex-col rounded-[24px] border p-4" style={cardStyle}>
-      <Placeholder ratio="4:3" caption={item.tag} mark={false} alt="" className="!rounded-[12px]" />
+      <div className="relative aspect-[4/3] overflow-hidden rounded-[12px]">
+        <ImageFrame
+          src={domainPhotos[item.slug].src}
+          alt=""
+          className="absolute inset-0 h-full w-full"
+          objectPosition={domainPhotos[item.slug].objectPosition}
+          sizes="(max-width: 768px) 92vw, 540px"
+        />
+      </div>
       <h3 className="type-h3 mt-5">{item.title}</h3>
       <p className="type-body mt-2 flex-1" style={{ color: 'var(--ink-muted)' }}>
         {item.descriptor}
