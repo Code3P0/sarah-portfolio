@@ -29,7 +29,7 @@ function FeaturedCard({ item }: { item: Work }) {
   return (
     <Link
       href={`/projects#${item.id}`}
-      className="card-lift group flex flex-col gap-4 rounded-[24px] border p-4 md:col-span-2 md:flex-row md:gap-6"
+      className="work-card group flex flex-col gap-4 rounded-[24px] border p-4 md:col-span-2 md:flex-row md:gap-6"
       style={cardStyle}
     >
       <div className="md:w-[60%]">
@@ -50,7 +50,7 @@ function FeaturedCard({ item }: { item: Work }) {
 
 function WorkCard({ item }: { item: Work }) {
   return (
-    <Link href={`/projects#${item.id}`} className="card-lift group flex flex-col rounded-[24px] border p-4" style={cardStyle}>
+    <Link href={`/projects#${item.id}`} className="work-card group flex flex-col rounded-[24px] border p-4" style={cardStyle}>
       <Placeholder ratio="4:3" caption={item.caption} alt={`${item.title} preview`} className="!rounded-[12px]" />
       <h3 className="type-h3 mt-5">{item.title}</h3>
       <p className="type-body mt-2 flex-1" style={{ color: 'var(--ink-muted)' }}>

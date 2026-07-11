@@ -483,6 +483,58 @@ body {
 }
 } /* end @layer components */
 
+/* ===== Card hover/focus microinteraction (press + work cards) ==============
+   Hover/focus lifts the whole card (scale 1.04 + deeper shadow) and brightens
+   its photo above its neighbours. Only transform/filter/shadow animate. Wrapped
+   in @media (hover: hover) so touch devices never get stuck hovered — on touch
+   the in-view card is brightened by ImageFrame's IntersectionObserver instead. */
+@media (hover: hover) {
+  .press-card,
+  .work-card {
+    transition: transform 250ms var(--ease), box-shadow 250ms var(--ease);
+    will-change: transform;
+  }
+  .press-card:hover,
+  .press-card:focus-visible,
+  .work-card:hover,
+  .work-card:focus-visible {
+    transform: scale(1.04);
+    box-shadow: var(--shadow-hover);
+    z-index: 1;
+  }
+  .press-card:hover .img-frame img,
+  .press-card:focus-visible .img-frame img,
+  .work-card:hover .img-frame img,
+  .work-card:focus-visible .img-frame img {
+    filter: saturate(1.08) brightness(1.02);
+    transform: none;
+  }
+  .press-card:hover .img-frame::after,
+  .press-card:focus-visible .img-frame::after,
+  .work-card:hover .img-frame::after,
+  .work-card:focus-visible .img-frame::after {
+    opacity: 0.03;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .press-card,
+  .work-card {
+    transition: none;
+  }
+  .press-card:hover,
+  .press-card:focus-visible,
+  .work-card:hover,
+  .work-card:focus-visible {
+    transform: none;
+  }
+}
+
+/* ===== Press strip — subtle right-edge fade signalling more to scroll ===== */
+.press-strip {
+  -webkit-mask-image: linear-gradient(to right, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 88%, transparent 100%);
+}
+
 /* ===== Focus visibility ===== */
 :where(a, button, [role="button"], input, textarea, select):focus-visible {
   outline: 2px solid var(--accent);

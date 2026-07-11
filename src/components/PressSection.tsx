@@ -1,50 +1,85 @@
+'use client'
+
+import { useRef } from 'react'
 import Section from '@/components/Section'
 import ScrollReveal from '@/components/ScrollReveal'
 import ImageFrame from '@/components/ImageFrame'
 import { pressArticles, type PressArticle } from '@/data/press'
 
 function PressCard({ a }: { a: PressArticle }) {
-  const hasImage = !!a.image
   return (
     <a
       href={a.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="card-lift group relative block overflow-hidden rounded-[24px] border"
+      aria-label={`${a.outlet}: ${a.headline} — opens in a new tab`}
+      className="press-card group relative block w-[300px] shrink-0 snap-start overflow-hidden rounded-[24px] border sm:w-[320px]"
       style={{ aspectRatio: '3 / 4', background: 'var(--canvas-raised)', borderColor: 'var(--line)' }}
     >
-      {hasImage && (
-        <>
-          <ImageFrame
-            src={a.image as string}
-            alt={`${a.outlet}: Sarah Graves — ${a.headline}`}
-            className="absolute inset-0 h-full w-full"
-            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 25vw"
-          />
-          {/* Scrim behind the text for legibility */}
-          <div
-            className="absolute inset-0 z-[2]"
-            style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.15) 45%, transparent 70%)' }}
-          />
-        </>
+      {a.image && (
+        <ImageFrame
+          src={a.image}
+          alt={`${a.outlet}: Sarah Graves, Texas Women's Basketball guard — ${a.headline}`}
+          className="absolute inset-0 h-full w-full"
+          objectPosition={a.objectPosition}
+          sizes="340px"
+        />
       )}
-      <div className="absolute inset-0 z-[3] flex flex-col p-5">
-        <p className="type-caption" style={{ color: hasImage ? 'rgba(255,255,255,0.85)' : 'var(--ink-muted)' }}>
-          {a.outlet}
-        </p>
-        <p className="font-serif text-lg leading-snug mt-2" style={{ color: hasImage ? '#F5F5F3' : 'var(--ink)' }}>
-          {a.headline}
-        </p>
-        <span className="mt-auto pt-4 type-body" style={{ color: 'var(--accent)' }}>
-          Read <span className="inline-block transition-transform duration-150 group-hover:translate-x-0.5">→</span>
-        </span>
-      </div>
+      {/* top scrim so the outlet eyebrow reads on any photo */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[2] h-24" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.5), transparent)' }} />
+      {/* bottom scrim so the headline never fights the photo or covers a face */}
+      <div className="pointer-events-none absolute inset-0 z-[2]" style={{ background: 'linear-gradient(to bottom, transparent 55%, rgba(0,0,0,0.66) 100%)' }} />
+
+      <p className="absolute left-5 top-5 z-[3] type-caption" style={{ color: 'rgba(255,255,255,0.9)' }}>
+        {a.outlet}
+      </p>
+      <p className="absolute inset-x-5 bottom-5 z-[3] font-serif text-xl font-normal leading-snug" style={{ color: '#F5F5F3' }}>
+        {a.headline}
+      </p>
     </a>
   )
 }
 
 export default function PressSection() {
-  // Section does not render at all when there are no articles.
+  const strip = useRef<HTMLDivElement>(null)
+  const drag = useRef({ down: false, x: 0, start: 0, moved: false })
+
+  const step = () => (strip.current?.querySelector<HTMLElement>('.press-card')?.offsetWidth ?? 320) + 24
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowRight') {
+      e.preventDefault()
+      strip.current?.scrollBy({ left: step(), behavior: 'smooth' })
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault()
+      strip.current?.scrollBy({ left: -step(), behavior: 'smooth' })
+    }
+  }
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === 'touch') return
+    const el = strip.current
+    if (!el) return
+    drag.current = { down: true, x: e.clientX, start: el.scrollLeft, moved: false }
+  }
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!drag.current.down) return
+    const el = strip.current
+    if (!el) return
+    const dx = e.clientX - drag.current.x
+    if (Math.abs(dx) > 4) drag.current.moved = true
+    el.scrollLeft = drag.current.start - dx
+  }
+  const endDrag = () => {
+    drag.current.down = false
+  }
+  const onClickCapture = (e: React.MouseEvent) => {
+    if (drag.current.moved) {
+      e.preventDefault()
+      e.stopPropagation()
+      drag.current.moved = false
+    }
+  }
+
   if (pressArticles.length === 0) return null
 
   return (
@@ -53,12 +88,21 @@ export default function PressSection() {
         <p className="type-caption mb-8">Press</p>
       </ScrollReveal>
       <ScrollReveal>
-        {/* 4-up desktop, 2-up tablet, 1-up mobile; 1-3 center in the row */}
-        <div className="flex flex-wrap justify-center gap-6">
+        <div
+          ref={strip}
+          aria-label="Press coverage of Sarah Graves — scrollable"
+          tabIndex={0}
+          onKeyDown={onKeyDown}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerLeave={endDrag}
+          onClickCapture={onClickCapture}
+          className="press-strip no-scrollbar flex snap-x gap-6 overflow-x-auto rounded-[24px] px-2 py-5 outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]"
+          style={{ cursor: 'grab', scrollBehavior: 'smooth' }}
+        >
           {pressArticles.map((a, i) => (
-            <div key={i} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]">
-              <PressCard a={a} />
-            </div>
+            <PressCard key={i} a={a} />
           ))}
         </div>
       </ScrollReveal>

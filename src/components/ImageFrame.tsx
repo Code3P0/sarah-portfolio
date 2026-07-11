@@ -16,6 +16,8 @@ interface ImageFrameProps {
   sizes?: string
   /** object-fit when filling. */
   objectClassName?: string
+  /** CSS object-position (e.g. "85% 50%") to keep the subject in the crop. */
+  objectPosition?: string
 }
 
 /**
@@ -34,6 +36,7 @@ export default function ImageFrame({
   height,
   sizes,
   objectClassName = 'object-cover',
+  objectPosition,
 }: ImageFrameProps) {
   const ref = useRef<HTMLSpanElement | null>(null)
   const [active, setActive] = useState(false)
@@ -53,7 +56,14 @@ export default function ImageFrame({
   return (
     <span ref={ref} className={`img-frame ${active ? 'is-active' : ''} ${className}`}>
       {fill ? (
-        <Image src={src} alt={alt} fill sizes={sizes ?? '(max-width: 768px) 90vw, 33vw'} className={objectClassName} />
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes={sizes ?? '(max-width: 768px) 90vw, 33vw'}
+          className={objectClassName}
+          style={objectPosition ? { objectPosition } : undefined}
+        />
       ) : (
         <Image src={src} alt={alt} width={width ?? 64} height={height ?? 40} className={objectClassName} />
       )}
