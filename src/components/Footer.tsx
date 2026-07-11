@@ -34,7 +34,7 @@ const columns: { label: string; links: { label: string; href: string; external?:
 
 export default function Footer() {
   return (
-    <Section as="footer" className="border-t border-[var(--line)]">
+    <Section as="footer" className="border-t border-[var(--line)] !py-14 md:!py-20">
       <div className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-3">
         {columns.map((col) => (
           <nav key={col.label} className="flex flex-col">
@@ -58,7 +58,7 @@ export default function Footer() {
       </div>
 
       {/* Script wordmark sign-off — small, centered, the last thing on the page */}
-      <div className="mt-24 flex flex-col items-center gap-4">
+      <div className="mt-14 flex flex-col items-center gap-4">
         <img
           src="/images/black_signature.gif"
           alt="Sarah Graves"

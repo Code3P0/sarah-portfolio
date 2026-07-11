@@ -11,8 +11,10 @@ export function ThemeToggle({ overDark = false }: { overDark?: boolean }) {
 
   useEffect(() => {
     setMounted(true);
+    // Saved choice wins; otherwise respect the system preference on first visit.
     const savedTheme = localStorage.getItem('theme') as Theme | null;
-    const initialTheme = savedTheme || 'dark';
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme ?? (systemDark ? 'dark' : 'light');
     setTheme(initialTheme);
     document.documentElement.classList.toggle('dark', initialTheme === 'dark');
   }, []);

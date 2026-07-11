@@ -86,7 +86,7 @@ export default function Navigation() {
       {/* SG wordmark - top left */}
       <Link
         href="/"
-        className="fixed top-4 left-6 z-50 font-serif text-2xl font-normal tracking-wide"
+        className="fixed top-4 left-6 z-50 hidden font-serif text-2xl font-normal tracking-wide md:block"
         style={{ color: inkColor, transition: 'color var(--dur-state) var(--ease)' }}
       >
         SARAH GRAVES

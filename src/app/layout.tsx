@@ -50,6 +50,9 @@ export default function RootLayout({
         <noscript>
           <style>{`.reveal,.page-anim{opacity:1 !important;transform:none !important}`}</style>
         </noscript>
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         <Navigation />
         <div className="grain-overlay" />
         {children}

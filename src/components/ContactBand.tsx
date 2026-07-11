@@ -28,7 +28,7 @@ export default function ContactBand() {
         />
         <div>
           <h2 className="type-h2">Get in Touch</h2>
-          <Link href="mailto:sarahkgraves2@gmail.com" className="link-accent type-body mt-6 inline-block">
+          <Link href="mailto:sarahkgraves2@gmail.com" className="link-accent type-body mt-6 inline-block [overflow-wrap:anywhere]">
             sarahkgraves2@gmail.com
           </Link>
           <div className="mt-4 flex justify-center gap-8">

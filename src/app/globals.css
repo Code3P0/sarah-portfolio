@@ -44,6 +44,12 @@
   --dur-state: 400ms;   /* state transitions: 350-450ms */
   --dur-reveal: 620ms;  /* section reveals: 500-750ms */
   --dur-media: 820ms;   /* media crossfades: 700-900ms */
+  --dur-theme: 600ms;   /* day/night token crossfade: 500-800ms */
+
+  /* Hero atmosphere (day) */
+  --hero-amber: rgba(255, 176, 84, 0.0);       /* no amber wash in daylight */
+  --hero-scrim: rgba(245, 245, 243, 0.14);     /* faint lift for wordmark side */
+  --grain-opacity: 0.04;
 }
 
 /* ===== Dark Mode ===== */
@@ -72,6 +78,11 @@
   --shadow-lift: 0 8px 28px rgba(0, 0, 0, 0.5);
   --shadow-hover: 0 14px 36px rgba(0, 0, 0, 0.62);
   --ring-hover: rgba(255, 255, 255, 0.32);
+
+  /* Hero atmosphere (night) — espresso-dark from the canvas, localized amber */
+  --hero-amber: rgba(255, 158, 66, 0.30);
+  --hero-scrim: rgba(10, 9, 8, 0.44);
+  --grain-opacity: 0.06;
 }
 
 /* ===== Base Styles ===== */
@@ -494,19 +505,27 @@ body {
     transition: transform 250ms var(--ease), box-shadow 250ms var(--ease);
     will-change: transform;
   }
-  .press-card:hover,
-  .press-card:focus-visible,
   .work-card:hover,
   .work-card:focus-visible {
     transform: scale(1.04);
     box-shadow: var(--shadow-hover);
     z-index: 1;
   }
-  .press-card:hover .img-frame img,
-  .press-card:focus-visible .img-frame img,
+  /* Press cards get a deliberately dramatic lift — clearly alive vs neighbours */
+  .press-card:hover,
+  .press-card:focus-visible {
+    transform: scale(1.08);
+    box-shadow: var(--shadow-hover);
+    z-index: 1;
+  }
   .work-card:hover .img-frame img,
   .work-card:focus-visible .img-frame img {
     filter: saturate(1.08) brightness(1.02);
+    transform: none;
+  }
+  .press-card:hover .img-frame img,
+  .press-card:focus-visible .img-frame img {
+    filter: saturate(1.18) brightness(1.07);
     transform: none;
   }
   .press-card:hover .img-frame::after,
@@ -529,10 +548,96 @@ body {
   }
 }
 
-/* ===== Press strip — subtle right-edge fade signalling more to scroll ===== */
-.press-strip {
-  -webkit-mask-image: linear-gradient(to right, #000 88%, transparent 100%);
-  mask-image: linear-gradient(to right, #000 88%, transparent 100%);
+/* ===== Day/night crossfade ==================================================
+   Theme tokens animate over --dur-theme. Elements that declare their own
+   transitions (hover states etc.) are unaffected — the cascade keeps theirs. */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color;
+  transition-duration: var(--dur-theme);
+  transition-timing-function: var(--ease);
+}
+
+/* ===== Hero: ambient drift + film grain ====================================
+   Drift lives on the composite (both plates together) so the layers never
+   shear apart; 1.5% scale over 16s. Grain is a small noise tile whose
+   background-position steps slowly — atmosphere before effect. Both freeze
+   under prefers-reduced-motion via the global override. */
+@keyframes heroDrift {
+  from { transform: scale(1); }
+  to { transform: scale(1.015); }
+}
+.hero-drift {
+  animation: heroDrift 16s var(--ease) infinite alternate;
+  will-change: transform;
+}
+@keyframes grainShift {
+  0% { background-position: 0 0; }
+  100% { background-position: 180px 120px; }
+}
+.hero-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='hg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23hg)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+  animation: grainShift 9s steps(8) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-drift,
+  .hero-grain {
+    animation: none !important;
+  }
+}
+
+/* ===== Identity glyphs — inline photo grows dramatically on hover/focus ==== */
+.glyph-slot {
+  display: inline-block;
+  width: 1.6em;
+  height: 1em;
+  vertical-align: -0.14em;
+  position: relative;
+}
+.glyph-scale {
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  transform-origin: 50% 60%;
+  transition: transform var(--dur-state) var(--ease), box-shadow var(--dur-state) var(--ease);
+  will-change: transform;
+}
+@media (hover: hover) {
+  .glyph-link:hover .glyph-scale,
+  .glyph-link:focus-visible .glyph-scale {
+    transform: scale(3.4) rotate(-3deg);
+    box-shadow: 0 4px 14px rgba(10, 9, 8, 0.35);
+    z-index: 30;
+  }
+  .glyph-link:hover .glyph-scale .img-frame img,
+  .glyph-link:focus-visible .glyph-scale .img-frame img {
+    filter: saturate(1) brightness(1);
+  }
+  .glyph-link:hover .glyph-scale .img-frame::after,
+  .glyph-link:focus-visible .glyph-scale .img-frame::after {
+    opacity: 0.03;
+  }
+}
+
+/* ===== Skip link — visually hidden until keyboard-focused ===== */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  z-index: 100;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--canvas);
+  transition: top 160ms var(--ease);
+}
+.skip-link:focus-visible {
+  top: 16px;
 }
 
 /* ===== Focus visibility ===== */

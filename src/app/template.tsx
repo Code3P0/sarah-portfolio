@@ -40,7 +40,7 @@ export default function Template({ children }: { children: ReactNode }) {
 
   return (
     <MotionConfig reducedMotion="user">
-      <motion.div className="page-anim" style={{ overflowX: 'clip' }} initial={{ opacity: 0 }} animate={controls}>
+      <motion.div id="main-content" className="page-anim" style={{ overflowX: 'clip' }} initial={{ opacity: 0 }} animate={controls}>
         {children}
       </motion.div>
     </MotionConfig>

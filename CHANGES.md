@@ -1,68 +1,79 @@
 # CHANGES
 
-## Projects rebuild — domain index + four detail routes
+## Cinematic hero + refinement pass
 
-- **Projects index** (`/projects`): replaced Path/Operator's Lens/BOSI/NOAH with
-  four domain cards in a 2×2 grid — Strategy, Data Analytics, Media, Writing —
-  each a full link to its route, with the designed placeholder media (clean
-  tonal field + uppercase domain tag, no photo) and the shared work-card
-  hover/brighten recipe.
-- **Four detail routes** `/projects/{strategy,data,media,writing}`: all render
-  the shared `ProjectDetail` component, so they stay structurally identical and
-  are populated by editing data. Each has a header (large serif title +
-  descriptor + `← Projects` back link) and a vertical, image-alternating stack
-  of project entries.
-- **Data** `src/data/projects.ts`: object keyed by domain; each entry is
-  `{ role, year, context, title, summary, body, image?, url? }`. Ships with two
-  clearly-labelled placeholder entries per domain ("Project one/two", "Summary
-  in progress.", "Details in progress.") so pages look intentional and full.
-  Missing `image` → designed placeholder ("CASE STUDY · IN PROGRESS"); missing
-  `url` → the "View →" link is hidden. No "coming soon" strings anywhere.
-- **Dead references removed**: the homepage Selected Work (WorkRail) and the
-  Footer "Work" column now point at the four domain routes. WorkRail reads from
-  the same `domains` data. No links to the old project names/anchors remain.
-- **Page transitions** now cover nested routes: `/projects → /projects/strategy`
-  reads as forward, the reverse (and any ancestor navigation) as back; nav stays
-  fixed; reduced-motion is an opacity crossfade.
+### Pre-flight (important)
+- origin/main had diverged again (your `4705146` hero upload vs 10 unpushed local
+  redesign commits). A `reset --hard` would have destroyed the redesign, so I
+  **merged** (`5d09344`) — hero plates + full redesign both preserved.
+- **Front-hero matte is rough** (an opaque rectangle of original background +
+  white blob artifacts around the silhouette — reported before the build). The
+  composition hides it: both plates render position-identical, share ONE
+  drifting wrapper (so they can never shear), and the day/night treatment
+  grades both uniformly. Verified in screenshots: no visible seams in either
+  mode. A clean re-cut PNG would still be better; drop it in at the same path
+  and nothing else needs to change.
 
-### Fixed a real bug while here
-The route transition read `prefers-reduced-motion` via `typeof window` **during
-render**, which caused an SSR/client **hydration mismatch** on every page under
-reduced motion. Reworked `template.tsx` to apply the directional x-offset
-client-side via animation controls (SSR always renders `x:0`) and wrapped it in
-`MotionConfig reducedMotion="user"`. Verified hydration is now clean on `/`,
-`/projects`, `/projects/strategy`, `/about` in both normal and reduced motion.
+### Hero (`src/app/page.tsx`)
+- Layered composition, bottom→top: back plate → front cutout → night/day
+  treatment (crossfaded 600ms) → animated film grain → wordmark → one Contact
+  button. Clouds and their motion removed (PNGs remain in repo, unreferenced).
+- Night: espresso grade derived from the dark canvas + localized amber
+  (`--hero-amber`) wrapping Sarah's edge. Day: the existing light canvas with a
+  quiet lift for the wordmark — same world, different temperature.
+- Ambient motion: 1.5% scale drift over 16s on the composite; moving
+  monochrome grain (SVG noise tile, stepped background-position, blend overlay,
+  `--grain-opacity` 0.04 light / 0.06 dark). Both `aria-hidden`,
+  pointer-events-none, frozen under prefers-reduced-motion.
+- Wordmark: `black_signature.gif`, inverted to white in dark with a 600ms filter
+  crossfade. **Note:** `white_signature.gif` is still a dark-ink duplicate, so
+  the spec'd white file can't be used directly; invert is visually identical.
+- next/Image, `priority`, no lazy on hero plates; no CLS (absolute fill).
 
-## (Same session) Fix pass — hero, press, About, hover
+### Identity statement (`EditorialStatement.tsx`)
+- New copy: **"I am an MBA student playing basketball and building."**
+  - *MBA student* → LinkedIn; hovering grows the speaking photo dramatically
+    (scale 3.4, slight rotate, shadow — transform-only, no reflow; pattern from
+    editorial link-preview interactions), link turns gold with growing underline.
+  - *basketball* → grows the original court photo; links to the previously-used
+    Texas WBB post. TODO(sarah): confirm this is the destination you want.
+  - *building* → `/projects` (the four live domains).
+- Old sentence + retired "Currently" copy preserved in `src/data/draft-copy.ts`
+  (labelled TODO, not rendered). No references to Path/Operator's Lens/BOSI/
+  NOAH remain anywhere.
 
-- **Hero**: layered — hero photo (`object-position` biased right so Sarah stays
-  framed), theme scrim, slow drifting clouds (46–60s, freeze under reduced
-  motion), white inverted wordmark, Contact button. Removed the Feature Story,
-  Currently, and Finale sections from the homepage.
-- **Press**: horizontal scroll strip (snap, drag, wheel, keyboard, right-edge
-  fade + next-card sliver; no arrows/pagination/loop). New card: outlet eyebrow
-  top, bold serif headline on a bottom scrim, whole card is the link
-  (`aria-label`), no "Read →". 8 entries; ESPN label corrected to the Schaefer
-  quote; AP image reassigned; **per-entry `objectPosition`** — verified in
-  rendered screenshots that **Sarah is visible in all 8 crops** (notably
-  `march-picture` at `85%`, which was previously cropping her out).
-- **Card hover/focus**: unified recipe on press + work cards — scale 1.04, deeper
-  shadow, photo brightens above neighbours; `@media (hover: hover)` so touch
-  doesn't stick; in-view brightening handles touch. ImageFrame gained an
-  `objectPosition` prop.
-- **About**: two-column — constrained portrait video left, bio right; resume is
-  now a secondary pill button; mobile stacks video first.
+### Press strip (audit only — design kept)
+- Hover is now deliberately dramatic per request: **scale 1.08, saturate 1.18,
+  brightness 1.07**, deeper shadow (measured in verification). Work cards keep
+  the calmer 1.04 recipe.
+- Right-edge fade mask removed (it cut cards mid-body and read as a bug); the
+  visible card sliver is the scroll cue. Keyboard scroll re-verified (8→352px
+  on ArrowRight). Labels/URLs/images untouched — exactly as in `press.ts`.
 
-## Verified
-- Projects index (2×2) + all four detail routes render; light + dark, 1440 + 390.
-- Each detail route shows 2 designed placeholder entries, alternating image
-  side, no "coming soon", empty slots look intentional.
-- All 8 press cards: correct outlet order (Forbes, NYT, AP, ESPN, UT, Statesman,
-  X, X), correct labels, Sarah visible in every crop.
-- Hydration clean (normal + reduced motion); `next build` + `tsc` clean.
+### Theme system
+- First visit now respects `prefers-color-scheme`; explicit choice persists.
+- Global 600ms token crossfade (`--dur-theme`) for background/border/text;
+  elements with their own transitions are unaffected. Verified with a
+  mid-transition screenshot: temperature shift, no layout movement.
 
-## Notes / open items (unchanged from prior passes)
-- `white_signature.gif` is a duplicate dark asset → wordmark uses `black_signature.gif` + `invert`.
-- Signature GIFs are ~38 MB each — recommend a lighter asset for hero LCP.
-- `metadataBase` defaults to a placeholder domain — set `NEXT_PUBLIC_SITE_URL`.
-- Orphaned components now unused: `FeatureStory`, `Finale`, `Rail` (kept, not imported).
+### A11y / audits
+- Skip link added (`layout.tsx` → `#main-content` on the route wrapper).
+- Top-left "SARAH GRAVES" nav metadata was clipping under the pill at 390 —
+  now hidden below `md` (the hero signature is the identity there).
+- Footer vertical space reduced (`!py-14 md:!py-20`, sign-off `mt-14`); contact
+  email wraps safely (`overflow-wrap:anywhere`). About video pause control
+  re-verified functional earlier this session; resume is the secondary button.
+- No horizontal overflow at 320/375/768/1024/1440/1920 (measured).
+
+### Verified
+- `tsc` + production build clean; all routes prerender.
+- Hero screenshots light+dark at 1440 and 390 + one mid-transition frame.
+- Reduced motion: drift + grain report `animation: none`; theme snaps.
+- Identity hover, press hover, press keyboard all captured/measured.
+
+### Still needed from you
+1. A **clean front-hero cutout** (tight alpha, no background rectangle/blobs) —
+   optional but recommended; same path swap.
+2. A **lighter signature asset** (the GIFs are ~38 MB each — the main LCP cost).
+3. Confirm the *basketball* link destination (currently the Texas WBB post).
+4. Real `NEXT_PUBLIC_SITE_URL` for OG metadata.
