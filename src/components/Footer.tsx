@@ -60,11 +60,14 @@ export default function Footer() {
 
       {/* Script wordmark sign-off — small, centered, the last thing on the page */}
       <div className="mt-14 flex flex-col items-center gap-4">
+        {/* Animated handwriting sign-off (unoptimized: animated GIFs pass
+            through Next's optimizer as-is; lazy below the fold) */}
         <Image
-          src="/images/signature.png"
+          src="/images/black_signature.gif"
           alt="Sarah Graves"
-          width={1600}
-          height={364}
+          width={2914}
+          height={662}
+          unoptimized
           className="h-12 w-auto opacity-80 dark:invert"
         />
         <p className="type-caption">© 2026 Sarah Graves</p>
