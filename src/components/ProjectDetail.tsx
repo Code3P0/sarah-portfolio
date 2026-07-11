@@ -8,7 +8,7 @@ import type { Domain, ProjectEntry } from '@/data/projects'
 
 function EntryMedia({ entry }: { entry: ProjectEntry }) {
   if (!entry.image) {
-    return <Placeholder ratio="4:3" caption="CASE STUDY · IN PROGRESS" alt={`${entry.title} — case study in progress`} />
+    return <Placeholder ratio="4:3" caption="CASE STUDY · IN PROGRESS" mark={false} alt={`${entry.title}, case study in progress`} />
   }
   return (
     <div
@@ -17,7 +17,7 @@ function EntryMedia({ entry }: { entry: ProjectEntry }) {
     >
       <ImageFrame
         src={entry.image}
-        alt={`Sarah Graves — ${entry.title}`}
+        alt={`Sarah Graves, ${entry.title}`}
         className="absolute inset-0 h-full w-full"
         sizes="(max-width: 768px) 90vw, 45vw"
       />

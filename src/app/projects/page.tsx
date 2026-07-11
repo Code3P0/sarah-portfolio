@@ -2,38 +2,73 @@ import Link from 'next/link'
 import Footer from '@/components/Footer'
 import Section from '@/components/Section'
 import ScrollReveal from '@/components/ScrollReveal'
-import Placeholder from '@/components/Placeholder'
+import FilmBanner from '@/components/FilmBanner'
 import { domainList } from '@/data/projects'
+
+// Distinct subtle tonal field per card, derived from the warm palette; both
+// modes inherit via --canvas-raised.
+const tints = [
+  'color-mix(in srgb, var(--canvas-raised) 88%, #C9A227 12%)',
+  'color-mix(in srgb, var(--canvas-raised) 90%, #BF5700 10%)',
+  'color-mix(in srgb, var(--canvas-raised) 91%, #8A6D3B 9%)',
+  'color-mix(in srgb, var(--canvas-raised) 92%, #4A3F35 8%)',
+]
 
 export default function ProjectsPage() {
   return (
     <main className="min-h-screen" style={{ background: 'var(--canvas)' }}>
       <Section as="header" className="!pb-0" containerClassName="pt-16 text-center">
         <h1 className="type-h1">Projects</h1>
-        <p className="type-body mx-auto mt-4 max-w-[520px]" style={{ color: 'var(--ink-muted)' }}>
-          Four domains I work across — strategy, data, media, and writing.
-        </p>
       </Section>
 
+      {/* Thin cinematic film strip; poster + caption until a URL exists */}
+      <Section className="!pb-0" containerClassName="pt-2">
+        <ScrollReveal media>
+          <FilmBanner />
+        </ScrollReveal>
+      </Section>
+
+      {/* Four domains as designed typographic covers */}
       <Section>
         <ScrollReveal>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {domainList.map((d) => (
+            {domainList.map((d, i) => (
               <Link
                 key={d.slug}
                 href={`/projects/${d.slug}`}
-                className="work-card group flex flex-col rounded-[24px] border p-4"
-                style={{ background: 'var(--canvas-raised)', borderColor: 'var(--line)' }}
+                className="work-card group relative flex min-h-[300px] flex-col overflow-hidden rounded-[24px] border p-6 md:min-h-[360px]"
+                style={{ background: tints[i], borderColor: 'var(--line)' }}
               >
-                {/* Domains, not photo subjects — a clean tonal field + the tag */}
-                <Placeholder ratio="4:3" caption={d.tag} mark={false} alt="" className="!rounded-[12px]" />
-                <h2 className="type-h3 mt-5">{d.title}</h2>
-                <p className="type-body mt-2 flex-1" style={{ color: 'var(--ink-muted)' }}>
-                  {d.descriptor}
-                </p>
-                <span className="type-body mt-6" style={{ color: 'var(--accent)' }}>
-                  View <span className="inline-block transition-transform duration-150 group-hover:translate-x-0.5">→</span>
-                </span>
+                {/* index + entry count */}
+                <div className="flex items-start justify-between">
+                  <span className="type-caption">0{i + 1}</span>
+                  <span className="type-caption">
+                    {d.entries.length} {d.entries.length === 1 ? 'study' : 'studies'}
+                  </span>
+                </div>
+
+                {/* the domain word as the card's graphic; bleeds off the right edge */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none select-none absolute -right-3 top-14 whitespace-nowrap font-serif font-normal leading-none md:-right-4 md:top-16"
+                  style={{ fontSize: 'clamp(64px, 10vw, 112px)', color: 'var(--ink)', opacity: 0.92 }}
+                >
+                  {d.word}
+                </div>
+
+                {/* base block: descriptor + two-line action pattern */}
+                <div className="relative z-10 mt-auto">
+                  <p className="type-body max-w-[75%]" style={{ color: 'var(--ink-muted)' }}>
+                    {d.descriptor}
+                  </p>
+                  <p className="type-caption mt-6">{d.title}</p>
+                  <p className="type-body mt-1" style={{ color: 'var(--ink)' }}>
+                    Inside the work{' '}
+                    <span className="inline-block transition-transform duration-150 group-hover:translate-x-0.5" style={{ color: 'var(--accent)' }}>
+                      →
+                    </span>
+                  </p>
+                </div>
               </Link>
             ))}
           </div>

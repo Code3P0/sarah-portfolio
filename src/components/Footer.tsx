@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import Section from '@/components/Section'
 
 const columns: { label: string; links: { label: string; href: string; external?: boolean }[] }[] = [
@@ -59,9 +60,11 @@ export default function Footer() {
 
       {/* Script wordmark sign-off — small, centered, the last thing on the page */}
       <div className="mt-14 flex flex-col items-center gap-4">
-        <img
-          src="/images/black_signature.gif"
+        <Image
+          src="/images/signature.png"
           alt="Sarah Graves"
+          width={1600}
+          height={364}
           className="h-12 w-auto opacity-80 dark:invert"
         />
         <p className="type-caption">© 2026 Sarah Graves</p>

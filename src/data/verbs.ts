@@ -1,4 +1,4 @@
-// "I like to [verb]." — configuration for the VerbIntro prototype.
+// "I like to [verb]." — configuration for the VerbIntro section.
 // Edit verbs, media, alt text, cropping, and links here; the animation
 // component reads this array and needs no changes.
 
@@ -23,10 +23,9 @@ export const verbItems: VerbItem[] = [
     objectPosition: '50% 35%',
   },
   {
-    verb: 'ask',
-    mediaSrc: '/images/sarah-graves-media-microphone-march-madness.jpg',
-    mediaAlt: 'Sarah Graves holding a microphone during a March Madness interview',
-    objectPosition: '50% 28%',
+    verb: 'build',
+    // TODO(sarah): no product/prototype asset in the repo yet.
+    placeholderCaption: 'BUILD · ASSET TBD',
   },
   {
     verb: 'study',
@@ -40,14 +39,8 @@ export const verbItems: VerbItem[] = [
     objectPosition: '50% 30%',
   },
   {
-    verb: 'build',
-    // TODO(sarah): no product/prototype asset in the repo yet.
-    placeholderCaption: 'BUILD · ASSET TBD',
-  },
-  {
-    verb: 'edit',
-    mediaSrc: '/images/sarah-graves-desert-set.jpg',
-    mediaAlt: 'Sarah Graves on a film set with a cinema camera in frame',
-    objectPosition: '50% 32%',
+    verb: 'write',
+    // TODO(sarah): no writing/essay asset in the repo yet.
+    placeholderCaption: 'WRITE · ASSET TBD',
   },
 ]

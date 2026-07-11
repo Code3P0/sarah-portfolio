@@ -21,6 +21,8 @@ export interface ProjectEntry {
 export interface Domain {
   slug: DomainSlug
   title: string
+  /** Short display word used as the card's large typographic graphic. */
+  word: string
   tag: string
   descriptor: string
   entries: ProjectEntry[]
@@ -37,6 +39,7 @@ export const domains: Record<DomainSlug, Domain> = {
   strategy: {
     slug: 'strategy',
     title: 'Strategy',
+    word: 'Strategy',
     tag: 'STRATEGY',
     descriptor: 'Operating, advising, and building inside sports business.',
     entries: placeholderEntries('ADVISORY'),
@@ -44,6 +47,7 @@ export const domains: Record<DomainSlug, Domain> = {
   data: {
     slug: 'data',
     title: 'Data Analytics',
+    word: 'Data',
     tag: 'DATA',
     descriptor: 'Turning performance and market data into decisions.',
     entries: placeholderEntries('ANALYTICS'),
@@ -51,6 +55,7 @@ export const domains: Record<DomainSlug, Domain> = {
   media: {
     slug: 'media',
     title: 'Media',
+    word: 'Media',
     tag: 'MEDIA',
     descriptor: 'Filmed conversations, interviews, and video.',
     entries: placeholderEntries('PRODUCTION'),
@@ -58,6 +63,7 @@ export const domains: Record<DomainSlug, Domain> = {
   writing: {
     slug: 'writing',
     title: 'Writing',
+    word: 'Writing',
     tag: 'WRITING',
     descriptor: 'Essays and arguments on sports, business, and reform.',
     entries: placeholderEntries('ESSAY'),

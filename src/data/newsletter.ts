@@ -1,9 +1,9 @@
 // Newsletter copy. TODO: final wording pending Sarah.
 
 export const newsletterCopy = {
-  heading: 'Notes from the build.',
-  support: 'Occasional letters on sports, business, and what I’m making. No noise.',
-  eyebrow: 'ONCE IN A WHILE · UNSUBSCRIBE ANYTIME',
-  success: 'You’re in. Talk soon.',
-  error: 'Something broke. Try again or email me.',
+  heading: 'Newsletter',
+  support: 'Occasional emails about what I’m working on.',
+  caption: 'Unsubscribe anytime',
+  success: 'You’re in.',
+  error: 'That didn’t go through. Try again.',
 }

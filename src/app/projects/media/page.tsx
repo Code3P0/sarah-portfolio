@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import ProjectDetail from '@/components/ProjectDetail'
 import { domains } from '@/data/projects'
 
-export const metadata: Metadata = { title: 'Media — Sarah Graves' }
+export const metadata: Metadata = { title: 'Media · Sarah Graves' }
 
 export default function Page() {
   return <ProjectDetail domain={domains.media} />

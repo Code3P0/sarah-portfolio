@@ -113,7 +113,9 @@ export default function NewsletterSection() {
             )}
           </div>
 
-          <p className="type-caption mt-6">{newsletterCopy.eyebrow}</p>
+          <p className="mt-6 font-sans text-[13px]" style={{ color: 'var(--ink-muted)' }}>
+            {newsletterCopy.caption}
+          </p>
         </div>
       </ScrollReveal>
     </Section>

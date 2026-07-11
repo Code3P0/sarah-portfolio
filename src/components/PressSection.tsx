@@ -12,14 +12,14 @@ function PressCard({ a }: { a: PressArticle }) {
       href={a.url}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`${a.outlet}: ${a.headline} — opens in a new tab`}
+      aria-label={`${a.outlet}: ${a.headline}, opens in a new tab`}
       className="press-card group relative block w-[300px] shrink-0 snap-start overflow-hidden rounded-[24px] border sm:w-[320px]"
       style={{ aspectRatio: '3 / 4', background: 'var(--canvas-raised)', borderColor: 'var(--line)' }}
     >
       {a.image && (
         <ImageFrame
           src={a.image}
-          alt={`${a.outlet}: Sarah Graves, Texas Women's Basketball guard — ${a.headline}`}
+          alt={`${a.outlet}: Sarah Graves, Texas Women's Basketball guard. ${a.headline}`}
           className="absolute inset-0 h-full w-full"
           objectPosition={a.objectPosition}
           sizes="340px"
@@ -90,7 +90,7 @@ export default function PressSection() {
       <ScrollReveal>
         <div
           ref={strip}
-          aria-label="Press coverage of Sarah Graves — scrollable"
+          aria-label="Press coverage of Sarah Graves, scrollable"
           tabIndex={0}
           onKeyDown={onKeyDown}
           onPointerDown={onPointerDown}
